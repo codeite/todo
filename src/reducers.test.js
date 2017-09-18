@@ -1,5 +1,5 @@
 import { app, todos } from './reducers'
-import { addTodo, todoFromServer } from '../common/actions'
+import { addTodo, todoFromServer, deleteTodoFromServer } from './common/actions'
 
 describe('app reducer', () => {
   it('should return correct initial state', () => {
@@ -34,6 +34,21 @@ describe('todos reducer', () => {
       }
     ]
     const action = todoFromServer('a todo', 5, true)
+
+    expect(todos(before, action)).toEqual(after)
+  })
+
+  it('should delete a todo from the server', () => {
+    const before = [
+      {id: 4, text: 'four'},
+      {id: 5, text: 'five'},
+      {id: 6, text: 'six'}
+    ]
+    const after = [
+      {id: 4, text: 'four'},
+      {id: 6, text: 'six'}
+    ]
+    const action = deleteTodoFromServer(5)
 
     expect(todos(before, action)).toEqual(after)
   })

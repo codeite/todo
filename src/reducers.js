@@ -1,4 +1,4 @@
-import { init, addTodo, todoFromServer, loadData } from '../common/actions'
+import { init, addTodo, todoFromServer, deleteTodoFromServer, loadData } from './common/actions'
 
 export const app = (state = {}, action) => {
   const loading = (action => {
@@ -35,6 +35,7 @@ export const todos = (state = [], action = {}) => {
         done: action.done
       }
     ]
+    case deleteTodoFromServer.type: return state.filter(x => x.id !== action.id)
     case 'LOAD_DATA': return action.data
     default: return state
   }

@@ -1,12 +1,14 @@
-import {init, addTodo} from './actions'
+import {init, addTodo, deleteTodo} from './actions'
 
 const actionsToSendToServer = [
   init.type,
-  addTodo.type
+  addTodo.type,
+  deleteTodo.type
 ]
 
 export class RealServer {
-  constructor () {
+  constructor (urlPrefix) {
+    this.urlPrefix = urlPrefix
   }
 
   onAction (action) {
@@ -21,11 +23,12 @@ export class RealServer {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify(action)
     }
-    return window.fetch('/redux', options)
+    return window.fetch(this.urlPrefix + '/redux', options)
       .then(res => {
-        if (!res.ok()) throw new Error()
+        if (!res.ok) throw new Error()
         else return res.json()
       })
       .then(events => {

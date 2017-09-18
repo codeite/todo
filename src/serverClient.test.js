@@ -1,8 +1,8 @@
 import { createStore } from 'redux';
 
 import { ServerClient } from './serverClient'
-import { addTodo } from '../common/actions'
-import { RealServer } from '../common/realServer'
+import { addTodo } from './common/actions'
+import { RealServer } from './common/realServer'
 
 describe('ServerClient', () => {
   it('should ignore unknown events', () => {

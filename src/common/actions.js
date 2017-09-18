@@ -17,3 +17,13 @@ export function todoFromServer (text, id, done) {
   return {type: todoFromServer.type, text, id, done}
 }
 todoFromServer.type = 'TODO_FROM_SERVER'
+
+export function deleteTodo (id) {
+  return {type: deleteTodo.type, id}
+}
+deleteTodo.type = 'DELETE_TODO'
+
+export function deleteTodoFromServer (id) {
+  return {type: deleteTodoFromServer.type, id}
+}
+deleteTodoFromServer.type = 'DELETE_TODO_FROM_SERVER'

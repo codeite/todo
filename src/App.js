@@ -21,7 +21,7 @@ export class App extends Component {
       <div className="App">
         <div>Loading: {this.state.loading ? 'Loading' : '_'}</div>
         <TodoCreator store={this.props.store} />
-        <Todos todos={this.state.todos} />
+        <Todos store={this.props.store} todos={this.state.todos} />
       </div>
     );
   }

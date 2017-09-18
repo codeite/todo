@@ -59,4 +59,36 @@ describe('Todos', () => {
     expect(text.length).toBe(1)
     expect(text.text()).toBe('my todo text')
   })
+
+  it('should render the delete button', () => {
+    const todo = {
+      id: 23,
+      text: 'my todo text'
+    }
+
+    const wrapper = shallow(<Todo todo={todo} />)
+
+    const button = wrapper.find('.Todo-delete')
+    expect(button.length).toBe(1)
+    expect(button.text()).toBe('D')
+  })
+
+  it('should raise an "DELETE_TODO" event when delete button clicked', () => {
+    const dispatch = jest.fn()
+    const store = {
+      dispatch
+    }
+    const todo = {
+      id: 23,
+      text: 'my todo text'
+    }
+
+    const wrapper = shallow(<Todo todo={todo} store={store} />)
+    wrapper.find('.Todo-delete').simulate('click')
+
+    expect(dispatch.mock.calls.length).toBe(1);
+    const event = dispatch.mock.calls[0][0]
+    expect(event.type).toBe('DELETE_TODO')
+    expect(event.id).toBe(23)
+  })
 })
