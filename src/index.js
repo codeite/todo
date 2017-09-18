@@ -3,21 +3,20 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 
 import './index.css';
-import {App} from './App';
-import {app} from './reducers.js'
+import { App } from './App';
+import { app } from './reducers.js'
+import { ServerClient } from './serverClient.js'
+import { init } from '../common/actions.js'
+import { FakeServer } from '../common/fakeServer'
 
 //import registerServiceWorker from './registerServiceWorker';
 
-
 const store = createStore(app)
-store.dispatch({type: 'LOAD_DATA', data: [
-  {
-    id: 0,
-    text: 'first to do',
-    done: false
-  }
-]})
-console.log('store.getState():', store.getState())
+// store.subscribe(server.onAction)
+new ServerClient(store, new FakeServer(2000))
+
+store.dispatch(init())
+// console.log('store.getState():', store.getState())
 ReactDOM.render(<App store={store} />, document.getElementById('root'));
 
 // registerServiceWorker();

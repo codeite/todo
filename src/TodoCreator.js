@@ -1,6 +1,8 @@
 import React from 'react';
 import createReactClass from 'create-react-class'
 
+import { addTodo } from '../common/actions'
+
 export const TodoCreator = createReactClass({
   getInitialState() {
     return {
@@ -10,7 +12,7 @@ export const TodoCreator = createReactClass({
 
   onSubmit (e) {
     e.preventDefault()
-    this.props.store.dispatch({type: 'ADD_TODO', id:1, text: this.state.newTodoText})
+    this.props.store.dispatch(addTodo(this.state.newTodoText))
     this.setState({newTodoText: ''})
   },
 

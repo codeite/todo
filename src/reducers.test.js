@@ -1,9 +1,11 @@
 import { app, todos } from './reducers'
+import { addTodo, todoFromServer } from '../common/actions'
 
 describe('app reducer', () => {
   it('should return correct initial state', () => {
     const before = undefined
     const after = {
+      loading: false,
       todos: []
     }
     const action = undefined
@@ -22,20 +24,16 @@ describe('todos reducer', () => {
     expect(todos(before, action)).toEqual(after)
   })
 
-  it('should add a todo', () => {
+  it('should add a todo from the server', () => {
     const before = []
     const after = [
       {
-        id: 0,
+        id: 5,
         text: 'a todo',
-        done: false
+        done: true
       }
     ]
-    const action = {
-      type: 'ADD_TODO',
-      id: 0,
-      text: 'a todo'
-    }
+    const action = todoFromServer('a todo', 5, true)
 
     expect(todos(before, action)).toEqual(after)
   })

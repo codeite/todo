@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import createReactClass from 'create-react-class'
+//import createReactClass from 'create-react-class'
 import './App.css';
 
 import { Todos } from './Todos';
@@ -19,6 +19,7 @@ export class App extends Component {
     // console.log('JSON.stringify(this.state):', JSON.stringify(this.state))
     return (
       <div className="App">
+        <div>Loading: {this.state.loading ? 'Loading' : '_'}</div>
         <TodoCreator store={this.props.store} />
         <Todos todos={this.state.todos} />
       </div>
