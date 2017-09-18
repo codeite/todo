@@ -1,9 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import expect from 'expect'
 
 import { createStore } from 'redux'
-import { Todos, Todo } from './Todos'
+import { Todos, Todo, TodoCreator } from './Todos'
 import { app } from './reducers.js'
 
 import { shallow } from 'enzyme'

@@ -1,4 +1,3 @@
-import expect, { createSpy, spyOn, isSpy } from 'expect'
 import { app, todos } from './reducers'
 
 describe('app reducer', () => {

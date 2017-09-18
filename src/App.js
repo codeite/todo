@@ -3,6 +3,7 @@ import createReactClass from 'create-react-class'
 import './App.css';
 
 import { Todos } from './Todos';
+import { TodoCreator } from './TodoCreator';
 
 export class App extends Component {
   constructor (props) {
@@ -24,27 +25,3 @@ export class App extends Component {
     );
   }
 }
-
-const TodoCreator = createReactClass({
-  getInitialState() {
-    return {
-      newTodoText: ''
-    }
-  },
-
-  onSubmit (e) {
-    e.preventDefault()
-    this.props.store.dispatch({action: 'ADD_TODO', id:1, text: this.state.newTodoText})
-    this.setState({newTodoText: ''})
-  },
-
-  render () {
-    return <form onSubmit={this.onSubmit}>
-      <input
-        value={this.state.newTodoText}
-        onChange={e => this.setState({newTodoText: e.target.value})}
-      />
-      <button>Add</button>
-    </form>
-  }
-})
