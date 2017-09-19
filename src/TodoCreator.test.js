@@ -17,9 +17,13 @@ describe('TodoCreator', () => {
     const fakeEvent = { preventDefault }
 
     const wrapper = shallow(<TodoCreator store={store} />)
+    wrapper.find('input').simulate('change', { target: { value: 'todo1' } })
     wrapper.find('form').simulate('submit', fakeEvent);
 
-    expect(dispatch.mock.calls.length).toBe(1);
     expect(preventDefault.mock.calls.length).toBe(1);
+    expect(dispatch.mock.calls.length).toBe(1);
+    const event = dispatch.mock.calls[0][0]
+    expect(event.type).toBe('ADD_TODO')
+    expect(event.text).toBe('todo1')
   })
 })

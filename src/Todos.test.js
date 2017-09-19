@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
-import { Todos, Todo, TodoCreator } from './Todos'
+import { Todos, Todo, TodoTags } from './Todos'
 import { app } from './reducers.js'
 
 import { shallow } from 'enzyme'
@@ -71,6 +71,15 @@ describe('Todos', () => {
     const button = wrapper.find('.Todo-delete')
     expect(button.length).toBe(1)
     expect(button.text()).toBe('D')
+  })
+
+  it('should not mind about missing tags', () => {
+    const todo = {
+      id: 23,
+      text: 'my todo text',
+    }
+
+    const wrapper = shallow(<Todo todo={todo} />)
   })
 
   it('should raise an "DELETE_TODO" event when delete button clicked', () => {

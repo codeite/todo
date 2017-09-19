@@ -1,9 +1,10 @@
-import {init, addTodo, deleteTodo} from './actions'
+import {init, addTodo, deleteTodo, addTag} from './actions'
 
 const actionsToSendToServer = [
   init.type,
   addTodo.type,
-  deleteTodo.type
+  deleteTodo.type,
+  addTag.type
 ]
 
 export class RealServer {

@@ -1,15 +1,15 @@
-import { init, addTodo, todoFromServer, deleteTodoFromServer, loadData } from './common/actions'
+import * as actions from './common/actions'
 
 export const app = (state = {}, action) => {
   const loading = (action => {
     action = action || {}
     switch(action.type) {
-      case init.type:
-      case addTodo.type:
+      case actions.init.type:
+      case actions.addTodo.type:
         return true;
       case undefined:
-      case todoFromServer.type:
-      case loadData.type:
+      case actions.todoFromServer.type:
+      case actions.loadData.type:
         return false;
       default:
         return null;
@@ -27,7 +27,7 @@ export const app = (state = {}, action) => {
 
 export const todos = (state = [], action = {}) => {
   switch(action.type) {
-    case todoFromServer.type: return [
+    case actions.todoFromServer.type: return [
       ...state,
       {
         id: action.id,
@@ -35,7 +35,15 @@ export const todos = (state = [], action = {}) => {
         done: action.done
       }
     ]
-    case deleteTodoFromServer.type: return state.filter(x => x.id !== action.id)
+    case actions.deleteTodoFromServer.type: return state.filter(x => x.id !== action.id)
+    case actions.setTagsFromServer.type:
+      const todo = state.find(x => x.id === action.id)
+      if (!todo) return state
+      return [
+        ...state.filter(x => x.id < action.id),
+        {...todo, tags: action.tags},
+        ...state.filter(x => x.id > action.id)
+      ]
     case 'LOAD_DATA': return action.data
     default: return state
   }

@@ -1,5 +1,5 @@
 import { app, todos } from './reducers'
-import { addTodo, todoFromServer, deleteTodoFromServer } from './common/actions'
+import * as actions from './common/actions'
 
 describe('app reducer', () => {
   it('should return correct initial state', () => {
@@ -33,7 +33,7 @@ describe('todos reducer', () => {
         done: true
       }
     ]
-    const action = todoFromServer('a todo', 5, true)
+    const action = actions.todoFromServer('a todo', 5, true)
 
     expect(todos(before, action)).toEqual(after)
   })
@@ -48,7 +48,7 @@ describe('todos reducer', () => {
       {id: 4, text: 'four'},
       {id: 6, text: 'six'}
     ]
-    const action = deleteTodoFromServer(5)
+    const action = actions.deleteTodoFromServer(5)
 
     expect(todos(before, action)).toEqual(after)
   })
@@ -59,12 +59,26 @@ describe('todos reducer', () => {
       {id: 0, text: 'a todo', done: false}
     ]
 
-    const action = {
-      type: 'LOAD_DATA',
-      data: [
-        {id: 0, text: 'a todo', done: false}
-      ]
-    }
+    const action = actions.loadData([
+      {id: 0, text: 'a todo', done: false}
+    ])
+
+    expect(todos(before, action)).toEqual(after)
+  })
+
+  it('should be set tags from server', () => {
+    const before = [
+      {id: 12, text: 'a todo', done: false},
+      {id: 13, text: 'a todo', done: false},
+      {id: 14, text: 'a todo', done: false}
+    ]
+    const after = [
+      {id: 12, text: 'a todo', done: false},
+      {id: 13, text: 'a todo', done: false, tags: ['tag1']},
+      {id: 14, text: 'a todo', done: false},
+    ]
+
+    const action = actions.setTagsFromServer(13, ['tag1'])
 
     expect(todos(before, action)).toEqual(after)
   })
