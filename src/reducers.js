@@ -19,7 +19,8 @@ export const app = (state = {}, action) => {
   const newState = {
     ...state,
     loading: loading !== null ? loading : state.loading,
-    todos: todos(state.todos, action)
+    todos: todos(state.todos, action),
+    error: action && action.errorText
   }
   // console.log('reducer:app newState:', newState)
   return newState

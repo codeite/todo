@@ -15,14 +15,32 @@ describe('TodoTags', () => {
 
     const wrapper = shallow(<TodoTags todo={todo} />)
 
-    const tags = wrapper.find('.Todo-tag')
+    const tags = wrapper.find('.Todo-tag-text')
     expect(tags.length).toBe(3)
     expect(tags.at(0).text()).toBe('alpha')
     expect(tags.at(1).text()).toBe('bravo')
     expect(tags.at(2).text()).toBe('charlie')
   })
 
-  it('should a form to add new tags', () => {
+  it('should render a delete button for each tag', () => {
+    const todo = {
+      id: 23,
+      tags: ['alpha', 'bravo', 'charlie']
+    }
+
+    const wrapper = shallow(<TodoTags todo={todo} />)
+
+    const tags = wrapper.find('.Todo-tag-delete')
+    expect(tags.length).toBe(3)
+    expect(tags.at(0).text()).toBe('D')
+    expect(tags.at(0).getNode().props.title).toBe('Delete tag alpha')
+    expect(tags.at(1).text()).toBe('D')
+    expect(tags.at(1).getNode().props.title).toBe('Delete tag bravo')
+    expect(tags.at(2).text()).toBe('D')
+    expect(tags.at(2).getNode().props.title).toBe('Delete tag charlie')
+  })
+
+  it('should have a form to add new tags', () => {
     const todo = {
       id: 23
     }
@@ -54,5 +72,25 @@ describe('TodoTags', () => {
     expect(event.type).toBe('ADD_TAG')
     expect(event.id).toBe(14)
     expect(event.tagName).toBe('tag1')
+  })
+
+  it('should raise a "DELETE_TAG" event when add tag delete pressed', () => {
+    const dispatch = jest.fn()
+    const store = {
+      dispatch
+    }
+    const todo = {
+      id: 14,
+      tags: ['a']
+    }
+
+    const wrapper = shallow(<TodoTags todo={todo} store={store} />)
+    expect(wrapper.length).toBe(1)
+    wrapper.find('.Todo-tag-delete').simulate('click');
+
+    expect(dispatch.mock.calls.length).toBe(1);
+    const event = dispatch.mock.calls[0][0]
+    expect(event.type).toBe('DELETE_TAG')
+    expect(event.id).toBe(14)
   })
 })

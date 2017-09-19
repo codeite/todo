@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const actions = require('./actions')
+const actions = require('../../src/common/actions')
 
 const database = 'http://localhost:5984'
 
@@ -22,13 +22,14 @@ class TodoServer {
     return Promise.resolve()
       .then(() => {
         console.log('action:', action)
-        if (!action || !action.type) return []
+        if (!(action && action.type)) return []
 
         switch (action.type.toUpperCase()) {
           case actions.addTodo.type: return this.onAddTodo(action, username)
           case actions.init.type: return this.onInit(action, username)
           case actions.deleteTodo.type: return this.onDeleteTodo(action, username)
           case actions.addTag.type: return this.onAddTag(action, username)
+          case actions.deleteTag.type: return this.onDeleteTag(action, username)
           default: return [] // Do nothing
         }
       })
@@ -126,6 +127,28 @@ class TodoServer {
         if (todo) {
           todo.tags = todo.tags.filter(x => x !== action.tagName)
           todo.tags.unshift(action.tagName)
+          return this.saveUser(username, user).then(() => todo.tags)
+        }
+      })
+      .then(newTags => {
+        if (newTags) {
+          return [actions.setTagsFromServer(action.id, newTags)]
+        } else {
+          return []
+        }
+      })
+      .catch(err => {
+        console.log('Error while adding todo:', err)
+        throw err
+      })
+  }
+
+  onDeleteTag (action, username) {
+    return this.getUser(username)
+      .then(user => {
+        const todo = user.todos.find(x => x.id == action.id)
+        if (todo) {
+          todo.tags = todo.tags.filter(x => x !== action.tagName)
           return this.saveUser(username, user).then(() => todo.tags)
         }
       })

@@ -63,10 +63,20 @@ function addTag (id, tagName) {
 }
 addTag.type = 'ADD_TAG'
 
+function deleteTag (id, tagName) {
+  return {type: deleteTag.type, id, tagName}
+}
+deleteTag.type = 'DELETE_TAG'
+
 function setTagsFromServer (id, tags) {
   return {type: setTagsFromServer.type, id, tags}
 }
 setTagsFromServer.type = 'SET_TAGS_FROM_SERVER'
+
+function showError (errorText) {
+  return {type: showError.type, errorText}
+}
+showError.type = 'SHOW_ERROR'
 
 module.exports = {
   init,
@@ -76,5 +86,7 @@ module.exports = {
   deleteTodo,
   deleteTodoFromServer,
   addTag,
-  setTagsFromServer
+  deleteTag,
+  setTagsFromServer,
+  showError
 }

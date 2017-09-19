@@ -20,6 +20,7 @@ export class App extends Component {
     return (
       <div className="App">
         <div>Loading: {this.state.loading ? 'Loading' : '_'}</div>
+        <div>Error: {this.state.error || '_'}</div>
         <TodoCreator store={this.props.store} />
         <Todos store={this.props.store} todos={this.state.todos} />
       </div>

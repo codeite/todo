@@ -1,6 +1,6 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
-import {addTag} from './common/actions'
+import {addTag, deleteTag} from './common/actions'
 
 export const TodoTags = createReactClass({
   getInitialState() {
@@ -24,7 +24,11 @@ export const TodoTags = createReactClass({
       />
       <button>Add</button>
       <ol>
-        {(tags || []).map(tag => <li key={tag} className='Todo-tag'>{tag}</li>)}
+        {(tags || []).map(tag => <li key={tag} className='Todo-tag'>
+          <span className='Todo-tag-text'>{tag}</span>
+          {' '}
+          <a className="Todo-tag-delete" title={'Delete tag ' + tag} onClick={() => this.props.store.dispatch(deleteTag(this.props.todo.id, tag))}>D</a>
+        </li>)}
       </ol>
     </form>
   }

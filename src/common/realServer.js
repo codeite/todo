@@ -1,10 +1,11 @@
-import {init, addTodo, deleteTodo, addTag} from './actions'
+import {init, addTodo, deleteTodo, addTag, deleteTag, showError} from './actions'
 
 const actionsToSendToServer = [
   init.type,
   addTodo.type,
   deleteTodo.type,
-  addTag.type
+  addTag.type,
+  deleteTag.type
 ]
 
 export class RealServer {
@@ -29,7 +30,7 @@ export class RealServer {
     }
     return window.fetch(this.urlPrefix + '/redux', options)
       .then(res => {
-        if (!res.ok) throw new Error()
+        if (!res.ok) return res.text().then(text => [showError(res.status + ' ' + text)])
         else return res.json()
       })
       .then(events => {
