@@ -5,7 +5,6 @@ describe('app reducer', () => {
   it('should return correct initial state', () => {
     const before = undefined
     const after = {
-      loading: false,
       todos: []
     }
     const action = undefined

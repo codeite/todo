@@ -21,11 +21,17 @@ http.createServer((req, res) => {
     .substr('username='.length)
 
   if (req.url.startsWith ('/login')) {
-    const auth = JSON.parse(decodeURIComponent(req.url.substr(req.url.indexOf('?')+1)))
+    try {
+      const auth = JSON.parse(decodeURIComponent(req.url.substr(req.url.indexOf('?')+1)))
 
-    res.setHeader('Set-Cookie', 'username=' + auth.username)
-    res.write('Logged in')
-    res.end()
+      res.setHeader('Set-Cookie', 'username=' + auth.username)
+      res.write('Logged in as: ' + auth.username)
+      res.end()
+    } catch (ex) {
+      res.setHeader('Content-Type', 'text/html')
+      res.write(`To log in: <a href='/login?{"username":"sam"}'>/login?{"username":"sam"}</a>`)
+      res.end()
+    }
     return
   }
 

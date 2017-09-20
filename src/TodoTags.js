@@ -17,17 +17,17 @@ export const TodoTags = createReactClass({
 
   render () {
     const tags = this.props.todo.tags || []
-    return <form className='Todo-newTag' onSubmit={this.onSubmit}>
+    return <form className='TodoTags' onSubmit={this.onSubmit}>
       <input
         value={this.state.newTagText}
         onChange={e => this.setState({newTagText: e.target.value})}
       />
       <button>Add</button>
       <ol>
-        {(tags || []).map(tag => <li key={tag} className='Todo-tag'>
-          <span className='Todo-tag-text'>{tag}</span>
+        {(tags || []).map(tag => <li key={tag} className='TodoTags-tag'>
+          <span className='TodoTags-tag-text'>{tag}</span>
           {' '}
-          <a className="Todo-tag-delete" title={'Delete tag ' + tag} onClick={() => this.props.store.dispatch(deleteTag(this.props.todo.id, tag))}>D</a>
+          <a className="TodoTags-tag-delete" title={'Delete tag ' + tag} onClick={() => this.props.store.dispatch(deleteTag(this.props.todo.id, tag))}>♻</a>
         </li>)}
       </ol>
     </form>

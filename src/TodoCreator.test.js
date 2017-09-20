@@ -26,4 +26,20 @@ describe('TodoCreator', () => {
     expect(event.type).toBe('ADD_TODO')
     expect(event.text).toBe('todo1')
   })
+
+  it('should not raise an "ADD_TODO" event when form submitted with empty (after trim) todo name', () => {
+    const dispatch = jest.fn()
+    const preventDefault = jest.fn()
+    const store = {
+      dispatch
+    }
+    const fakeEvent = { preventDefault }
+
+    const wrapper = shallow(<TodoCreator store={store} />)
+    wrapper.find('input').simulate('change', { target: { value: ' \t ' } })
+    wrapper.find('form').simulate('submit', fakeEvent);
+
+    expect(preventDefault.mock.calls.length).toBe(1);
+    expect(dispatch.mock.calls.length).toBe(0);
+  })
 })

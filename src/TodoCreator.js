@@ -12,13 +12,16 @@ export const TodoCreator = createReactClass({
 
   onSubmit (e) {
     e.preventDefault()
-    this.props.store.dispatch(addTodo(this.state.newTodoText))
-    this.setState({newTodoText: ''})
+    if (this.state.newTodoText.trim()) {
+      this.props.store.dispatch(addTodo(this.state.newTodoText))
+      this.setState({newTodoText: ''})
+    }
   },
 
   render () {
     return <form onSubmit={this.onSubmit}>
       <input
+        placeholder='New todo...'
         value={this.state.newTodoText}
         onChange={e => this.setState({newTodoText: e.target.value})}
       />

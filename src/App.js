@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import createReactClass from 'create-react-class'
-import './App.css';
+import './App.scss';
 
 import { Todos } from './Todos';
 import { TodoCreator } from './TodoCreator';
@@ -19,8 +19,10 @@ export class App extends Component {
     // console.log('JSON.stringify(this.state):', JSON.stringify(this.state))
     return (
       <div className="App">
-        <div>Loading: {this.state.loading ? 'Loading' : '_'}</div>
-        <div>Error: {this.state.error || '_'}</div>
+        <header>
+          <div style={{height: '1.5em'}}>{this.state.loading ? <img alt='Loading..' src='/spinner.svg' style={{height: '1.5em'}}/> : <div>&nbsp;</div>}</div>
+          <div>{this.state.error || ''}</div>
+        </header>
         <TodoCreator store={this.props.store} />
         <Todos store={this.props.store} todos={this.state.todos} />
       </div>

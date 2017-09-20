@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "must-sinon": "^0.0.0",
+    "node-sass-chokidar": "^0.0.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "redux": "^3.7.2",
@@ -15,6 +16,9 @@
     "react-test-renderer": "^15.6.1"
   },
   "scripts": {
+    "build-scssMaster": "find src -name *.scss | awk 'NF { print \"@import \\\"../\"$0\"\\\";\"}' > public/bundle.scss",
+    "build-css": "npm run build-scssMaster && node-sass-chokidar public/bundle.scss -o public",
+    "watch-css": "npm run build-css && node-sass-chokidar public/bundle.scss -o public --watch",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

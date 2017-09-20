@@ -1,16 +1,19 @@
-import {init, addTodo, deleteTodo, addTag, deleteTag, showError} from './actions'
+import * as actions from './actions'
 
 const actionsToSendToServer = [
-  init.type,
-  addTodo.type,
-  deleteTodo.type,
-  addTag.type,
-  deleteTag.type
+  actions.init.type,
+  actions.addTodo.type,
+  actions.deleteTodo.type,
+  actions.addTag.type,
+  actions.deleteTag.type,
+  actions.setTodoStatus.type
 ]
 
 export class RealServer {
-  constructor (urlPrefix) {
+  constructor (store, urlPrefix) {
+    this.store = store
     this.urlPrefix = urlPrefix
+    this.pending = 0
   }
 
   onAction (action) {
@@ -20,6 +23,8 @@ export class RealServer {
       return Promise.resolve([])
     }
 
+    this.store.dispatch(actions.setLoading(true))
+
     const options = {
       method: 'POST',
       headers: {
@@ -28,12 +33,17 @@ export class RealServer {
       credentials: 'include',
       body: JSON.stringify(action)
     }
+    this.pending++
     return window.fetch(this.urlPrefix + '/redux', options)
       .then(res => {
         if (!res.ok) return res.text().then(text => [showError(res.status + ' ' + text)])
         else return res.json()
       })
       .then(events => {
+        this.pending--
+        if (this.pending === 0) {
+          events.unshift(setLoading(false))
+        }
         return events
       })
   }

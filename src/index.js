@@ -15,7 +15,7 @@ import { RealServer } from './common/realServer'
 const store = createStore(app)
 // store.subscribe(server.onAction)
 //new ServerClient(store, new FakeServer(2000))
-new ServerClient(store, new RealServer('http://localhost:3001'))
+new ServerClient(store, new RealServer(store, 'http://localhost:3001'))
 
 store.dispatch(init())
 // console.log('store.getState():', store.getState())

@@ -1,24 +1,15 @@
 import * as actions from './common/actions'
 
 export const app = (state = {}, action) => {
-  const loading = (action => {
-    action = action || {}
-    switch(action.type) {
-      case actions.init.type:
-      case actions.addTodo.type:
-        return true;
-      case undefined:
-      case actions.todoFromServer.type:
-      case actions.loadData.type:
-        return false;
-      default:
-        return null;
-    }
-  })(action)
+  const loading = (
+    ((action && action.type) === actions.setLoading.type) ?
+      action.loadingState :
+      state.loading
+  )
 
   const newState = {
     ...state,
-    loading: loading !== null ? loading : state.loading,
+    loading,
     todos: todos(state.todos, action),
     error: action && action.errorText
   }

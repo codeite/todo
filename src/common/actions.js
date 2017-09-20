@@ -78,6 +78,11 @@ function showError (errorText) {
 }
 showError.type = 'SHOW_ERROR'
 
+function setLoading (loadingState) {
+  return {type: setLoading.type, loadingState}
+}
+setLoading.type = 'SET_LOADING'
+
 module.exports = {
   init,
   loadData,
@@ -88,5 +93,6 @@ module.exports = {
   addTag,
   deleteTag,
   setTagsFromServer,
-  showError
+  showError,
+  setLoading
 }

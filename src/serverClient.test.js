@@ -7,14 +7,14 @@ import { RealServer } from './common/realServer'
 describe('ServerClient', () => {
   it('should ignore unknown events', () => {
     const store = createStore(() => {})
-    const server = new ServerClient(store, new RealServer())
+    const server = new ServerClient(store, new RealServer(store))
 
     store.dispatch({type: 'UNKNOWN_EVENT'})
   })
 
   it('should send ADD_TODO event to server', () => {
     const store = createStore(() => {})
-    const server = new ServerClient(store, new RealServer())
+    const server = new ServerClient(store, new RealServer(store))
     const spy = jest.fn()
 
     window.fetch = (...args) => {return new Promise(

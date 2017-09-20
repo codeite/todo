@@ -11,9 +11,9 @@ export const Todos = ({store, todos}) => {
 export const Todo = ({store, todo}) => {
   return <li className='Todo'>
     <div >
-      <a className='Todo-delete' onClick={() => store.dispatch(deleteTodo(todo.id))}>D</a>
-      {' '}
       <span className='Todo-text'>{todo.text}</span>
+      {' '}
+      <a className='Todo-delete' onClick={() => store.dispatch(deleteTodo(todo.id))}>X</a>
       <TodoTags store={store} todo={todo} />
     </div>
   </li>

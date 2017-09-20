@@ -15,7 +15,7 @@ describe('TodoTags', () => {
 
     const wrapper = shallow(<TodoTags todo={todo} />)
 
-    const tags = wrapper.find('.Todo-tag-text')
+    const tags = wrapper.find('.TodoTags-tag-text')
     expect(tags.length).toBe(3)
     expect(tags.at(0).text()).toBe('alpha')
     expect(tags.at(1).text()).toBe('bravo')
@@ -30,13 +30,13 @@ describe('TodoTags', () => {
 
     const wrapper = shallow(<TodoTags todo={todo} />)
 
-    const tags = wrapper.find('.Todo-tag-delete')
+    const tags = wrapper.find('.TodoTags-tag-delete')
     expect(tags.length).toBe(3)
-    expect(tags.at(0).text()).toBe('D')
+    expect(tags.at(0).text()).toBe('♻')
     expect(tags.at(0).getNode().props.title).toBe('Delete tag alpha')
-    expect(tags.at(1).text()).toBe('D')
+    expect(tags.at(1).text()).toBe('♻')
     expect(tags.at(1).getNode().props.title).toBe('Delete tag bravo')
-    expect(tags.at(2).text()).toBe('D')
+    expect(tags.at(2).text()).toBe('♻')
     expect(tags.at(2).getNode().props.title).toBe('Delete tag charlie')
   })
 
@@ -47,7 +47,7 @@ describe('TodoTags', () => {
 
     const wrapper = shallow(<TodoTags todo={todo} />)
 
-    const newTag = wrapper.find('form.Todo-newTag')
+    const newTag = wrapper.find('form.TodoTags')
     expect(newTag.length).toBe(1)
   })
 
@@ -86,7 +86,7 @@ describe('TodoTags', () => {
 
     const wrapper = shallow(<TodoTags todo={todo} store={store} />)
     expect(wrapper.length).toBe(1)
-    wrapper.find('.Todo-tag-delete').simulate('click');
+    wrapper.find('.TodoTags-tag-delete').simulate('click');
 
     expect(dispatch.mock.calls.length).toBe(1);
     const event = dispatch.mock.calls[0][0]

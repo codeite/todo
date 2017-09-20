@@ -7,7 +7,7 @@ import { app } from './reducers.js'
 
 import { shallow } from 'enzyme'
 
-describe('Todos.js', () => {
+describe('Todos', () => {
   it('renders without crashing', () => {
     const store = createStore(app)
     const div = document.createElement('div');
@@ -37,7 +37,7 @@ describe('Todos.js', () => {
   })
 })
 
-describe('Todos', () => {
+describe('Todo', () => {
   it('renders without crashing', () => {
     const store = createStore(app)
     const div = document.createElement('div');
@@ -70,7 +70,7 @@ describe('Todos', () => {
 
     const button = wrapper.find('.Todo-delete')
     expect(button.length).toBe(1)
-    expect(button.text()).toBe('D')
+    expect(button.text()).toBe('X')
   })
 
   it('should not mind about missing tags', () => {
