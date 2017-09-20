@@ -1,4 +1,4 @@
-import { app, todos } from './reducers'
+import { appReducer, todosReducer } from './reducers'
 import * as actions from './common/actions'
 
 describe('app reducer', () => {
@@ -9,7 +9,7 @@ describe('app reducer', () => {
     }
     const action = undefined
 
-    expect(app(before, action)).toEqual(after)
+    expect(appReducer(before, action)).toEqual(after)
   })
 })
 
@@ -20,7 +20,7 @@ describe('todos reducer', () => {
     const after = []
     const action = undefined
 
-    expect(todos(before, action)).toEqual(after)
+    expect(todosReducer(before, action)).toEqual(after)
   })
 
   it('should add a todo from the server', () => {
@@ -34,7 +34,7 @@ describe('todos reducer', () => {
     ]
     const action = actions.todoFromServer('a todo', 5, true)
 
-    expect(todos(before, action)).toEqual(after)
+    expect(todosReducer(before, action)).toEqual(after)
   })
 
   it('should delete a todo from the server', () => {
@@ -49,7 +49,7 @@ describe('todos reducer', () => {
     ]
     const action = actions.deleteTodoFromServer(5)
 
-    expect(todos(before, action)).toEqual(after)
+    expect(todosReducer(before, action)).toEqual(after)
   })
 
   it('should be able to load data', () => {
@@ -62,7 +62,7 @@ describe('todos reducer', () => {
       {id: 0, text: 'a todo', done: false}
     ])
 
-    expect(todos(before, action)).toEqual(after)
+    expect(todosReducer(before, action)).toEqual(after)
   })
 
   it('should be set tags from server', () => {
@@ -79,7 +79,24 @@ describe('todos reducer', () => {
 
     const action = actions.setTagsFromServer(13, ['tag1'])
 
-    expect(todos(before, action)).toEqual(after)
+    expect(todosReducer(before, action)).toEqual(after)
+  })
+
+  it('should set todo status from server', () => {
+    const before = [
+      {id: 12, text: 'a todo', done: false},
+      {id: 13, text: 'a todo', done: false},
+      {id: 14, text: 'a todo', done: false}
+    ]
+    const after = [
+      {id: 12, text: 'a todo', done: false},
+      {id: 13, text: 'a todo', done: true},
+      {id: 14, text: 'a todo', done: false},
+    ]
+
+    const action = actions.setTodoStatusFromServer(13, true)
+
+    expect(todosReducer(before, action)).toEqual(after)
   })
 })
 

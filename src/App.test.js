@@ -5,10 +5,10 @@ import { shallow } from 'enzyme'
 import { createStore } from 'redux';
 import { App } from './App';
 import { Todos } from './Todos';
-import { app } from './reducers.js'
+import { appReducer } from './reducers.js'
 
 it('renders without crashing', () => {
-  const store = createStore(app)
+  const store = createStore(appReducer)
   const div = document.createElement('div')
   ReactDOM.render(<App store={store}/>, div)
 });

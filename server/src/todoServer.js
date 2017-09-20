@@ -22,16 +22,22 @@ class TodoServer {
     return Promise.resolve()
       .then(() => {
         console.log('action:', action)
-        if (!(action && action.type)) return []
+        if (!(action && action.type && action.sendToServer)) return {message: `Should not send ${action.type} to server`, events: []}
 
-        switch (action.type.toUpperCase()) {
-          case actions.addTodo.type: return this.onAddTodo(action, username)
-          case actions.init.type: return this.onInit(action, username)
-          case actions.deleteTodo.type: return this.onDeleteTodo(action, username)
-          case actions.addTag.type: return this.onAddTag(action, username)
-          case actions.deleteTag.type: return this.onDeleteTag(action, username)
-          default: return [] // Do nothing
+        if (!this[action.type]) {
+          return {message: `Don't know how to process ${action.type} yet`, events: []} // Do nothing
         }
+
+        return this[action.type](action, username)
+        // switch (action.type.toUpperCase()) {
+        //   case actions.addTodo.type: return this.onAddTodo(action, username)
+        //   case actions.init.type: return this.onInit(action, username)
+        //   case actions.deleteTodo.type: return this.onDeleteTodo(action, username)
+        //   case actions.addTag.type: return this.onAddTag(action, username)
+        //   case actions.deleteTag.type: return this.onDeleteTag(action, username)
+        //   case actions.setTodoStatusFromServer.type: return this.onSetTodoStatusFromServer(action, username)
+        //   default: return {message: `Don't know how to process ${action.type} yet`, events: []} // Do nothing
+        // }
       })
       .then(result => {
         if(this.latency > 0) {
@@ -77,93 +83,115 @@ class TodoServer {
         }
       })
   }
+}
 
-  onInit(action, username) {
-    return this.getUser(username)
-      .then(user => {
-        return [actions.loadData(user.todos)]
-      })
-  }
+TodoServer.prototype[actions.init.type] = function (action, username) {
+  return this.getUser(username)
+    .then(user => {
+      return [actions.loadData(user.todos)]
+    })
+}
 
-  onAddTodo (action, username) {
-    return this.getUser(username)
-      .then(user => {
-        const newTodo = {
-          id: user.nextId++,
-          text: action.text,
-          done: false
-        }
-        user.todos.push(newTodo)
-        return this.saveUser(username, user).then(() => newTodo)
-      })
-      .then(newTodo => {
-        return [actions.todoFromServer(newTodo.text, newTodo.id, newTodo.done)]
-      })
-      .catch(err => {
-        console.log('Error while adding todo:', err)
-        throw err
-      })
-  }
+TodoServer.prototype[actions.addTodo.type] = function (action, username) {
+  return this.getUser(username)
+    .then(user => {
+      const newTodo = {
+        id: user.nextId++,
+        text: action.text,
+        done: false
+      }
+      user.todos.push(newTodo)
+      return this.saveUser(username, user).then(() => newTodo)
+    })
+    .then(newTodo => {
+      return [actions.todoFromServer(newTodo.text, newTodo.id, newTodo.done)]
+    })
+    .catch(err => {
+      console.log('Error while adding todo:', err)
+      throw err
+    })
+}
 
-  onDeleteTodo (action, username) {
-    return this.getUser(username)
-      .then(user => {
-        user.todos = user.todos.filter(x => x.id !== action.id)
-        return this.saveUser(username, user).then(() => action.id)
-      })
-      .then(id => {
-        return [actions.deleteTodoFromServer(id)]
-      })
-      .catch(err => {
-        console.log('Error while adding todo:', err)
-        throw err
-      })
-  }
+TodoServer.prototype[actions.deleteTodo.type] = function (action, username) {
+  return this.getUser(username)
+    .then(user => {
+      user.todos = user.todos.filter(x => x.id !== action.id)
+      return this.saveUser(username, user).then(() => action.id)
+    })
+    .then(id => {
+      return [actions.deleteTodoFromServer(id)]
+    })
+    .catch(err => {
+      console.log('Error while adding todo:', err)
+      throw err
+    })
+}
 
-  onAddTag (action, username) {
-    return this.getUser(username)
-      .then(user => {
-        const todo = user.todos.find(x => x.id == action.id)
-        if (todo) {
-          todo.tags = todo.tags.filter(x => x !== action.tagName)
-          todo.tags.unshift(action.tagName)
-          return this.saveUser(username, user).then(() => todo.tags)
-        }
-      })
-      .then(newTags => {
-        if (newTags) {
-          return [actions.setTagsFromServer(action.id, newTags)]
-        } else {
-          return []
-        }
-      })
-      .catch(err => {
-        console.log('Error while adding todo:', err)
-        throw err
-      })
-  }
+TodoServer.prototype[actions.addTag.type] = function (action, username) {
+  return this.getUser(username)
+    .then(user => {
+      const todo = user.todos.find(x => x.id == action.id)
+      if (todo) {
+        todo.tags = todo.tags.filter(x => x !== action.tagName)
+        todo.tags.unshift(action.tagName)
+        return this.saveUser(username, user).then(() => todo.tags)
+      }
+    })
+    .then(newTags => {
+      if (newTags) {
+        return [actions.setTagsFromServer(action.id, newTags)]
+      } else {
+        return []
+      }
+    })
+    .catch(err => {
+      console.log('Error while adding todo:', err)
+      throw err
+    })
+}
 
-  onDeleteTag (action, username) {
-    return this.getUser(username)
-      .then(user => {
-        const todo = user.todos.find(x => x.id == action.id)
-        if (todo) {
-          todo.tags = todo.tags.filter(x => x !== action.tagName)
-          return this.saveUser(username, user).then(() => todo.tags)
-        }
-      })
-      .then(newTags => {
-        if (newTags) {
-          return [actions.setTagsFromServer(action.id, newTags)]
-        } else {
-          return []
-        }
-      })
-      .catch(err => {
-        console.log('Error while adding todo:', err)
-        throw err
-      })
-  }
+TodoServer.prototype[actions.deleteTag.type] = function (action, username) {
+  return this.getUser(username)
+    .then(user => {
+      const todo = user.todos.find(x => x.id == action.id)
+      if (todo) {
+        todo.tags = todo.tags.filter(x => x !== action.tagName)
+        return this.saveUser(username, user).then(() => todo.tags)
+      }
+    })
+    .then(newTags => {
+      if (newTags) {
+        return [actions.setTagsFromServer(action.id, newTags)]
+      } else {
+        return []
+      }
+    })
+    .catch(err => {
+      console.log('Error while adding todo:', err)
+      throw err
+    })
+}
+
+TodoServer.prototype[actions.setTodoStatus.type] = function (action, username) {
+  return this.getUser(username)
+    .then(user => {
+      const todo = user.todos.find(x => x.id == action.id)
+      if (todo) {
+        todo.done = action.newStatus
+        return this.saveUser(username, user).then(() => todo)
+      }
+    })
+    .then(changedTodo => {
+      if (changedTodo) {
+        return [actions.setTodoStatusFromServer(action.id, changedTodo.done)]
+      } else {
+        return []
+      }
+    })
+    .catch(err => {
+      console.log('Error while adding todo:', err)
+      throw err
+    })
 }
 
 module.exports = TodoServer

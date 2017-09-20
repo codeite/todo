@@ -29,7 +29,7 @@
 // deleteTodoFromServer.type = 'DELETE_TODO_FROM_SERVER'
 
 function init () {
-  return {type: init.type}
+  return {type: init.type, sendToServer: true}
 }
 init.type = 'INIT'
 
@@ -39,7 +39,7 @@ function loadData (data) {
 loadData.type = 'LOAD_DATA'
 
 function addTodo (text) {
-  return {type: addTodo.type, text,}
+  return {type: addTodo.type, sendToServer: true, text}
 }
 addTodo.type = 'ADD_TODO'
 
@@ -49,7 +49,7 @@ function todoFromServer (text, id, done) {
 todoFromServer.type = 'TODO_FROM_SERVER'
 
 function deleteTodo (id) {
-  return {type: deleteTodo.type, id}
+  return {type: deleteTodo.type, sendToServer: true, id}
 }
 deleteTodo.type = 'DELETE_TODO'
 
@@ -59,12 +59,12 @@ function deleteTodoFromServer (id) {
 deleteTodoFromServer.type = 'DELETE_TODO_FROM_SERVER'
 
 function addTag (id, tagName) {
-  return {type: addTag.type, id, tagName}
+  return {type: addTag.type, sendToServer: true, id, tagName}
 }
 addTag.type = 'ADD_TAG'
 
 function deleteTag (id, tagName) {
-  return {type: deleteTag.type, id, tagName}
+  return {type: deleteTag.type, sendToServer: true, id, tagName}
 }
 deleteTag.type = 'DELETE_TAG'
 
@@ -83,6 +83,16 @@ function setLoading (loadingState) {
 }
 setLoading.type = 'SET_LOADING'
 
+function setTodoStatus (id, newStatus) {
+  return {type: setTodoStatus.type, sendToServer: true, id, newStatus}
+}
+setTodoStatus.type = 'SET_TODO_STATUS'
+
+function setTodoStatusFromServer (id, newStatus) {
+  return {type: setTodoStatusFromServer.type, id, newStatus}
+}
+setTodoStatusFromServer.type = 'SET_TODO_STATUS_FROM_SERVER'
+
 module.exports = {
   init,
   loadData,
@@ -94,5 +104,7 @@ module.exports = {
   deleteTag,
   setTagsFromServer,
   showError,
-  setLoading
+  setLoading,
+  setTodoStatus,
+  setTodoStatusFromServer
 }

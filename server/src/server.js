@@ -83,10 +83,14 @@ function processEvent (res, username, event) {
   todoServer.onAction(event, username)
     .then(result => {
       if (Array.isArray(result)) {
-        res.write(JSON.stringify(result))
+        const response = {
+          message: 'Process successfully',
+          events: result
+        }
+        res.write(JSON.stringify(response))
         res.end()
       } else {
-        res.write('[]')
+        res.write(JSON.stringify({message:'No action required', events:[]}))
         res.end()
       }
     })

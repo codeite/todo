@@ -1,5 +1,5 @@
 import React from 'react'
-import {deleteTodo} from './common/actions'
+import {deleteTodo, setTodoStatus} from './common/actions'
 import {TodoTags} from './TodoTags'
 
 export const Todos = ({store, todos}) => {
@@ -10,7 +10,13 @@ export const Todos = ({store, todos}) => {
 
 export const Todo = ({store, todo}) => {
   return <li className='Todo'>
-    <div >
+    <div>
+      <input
+        className='Todo-status'
+        type="checkbox"
+        checked={!!todo.done}
+        onChange={e => store.dispatch(setTodoStatus(todo.id, e.target.checked))}
+      />
       <span className='Todo-text'>{todo.text}</span>
       {' '}
       <a className='Todo-delete' onClick={() => store.dispatch(deleteTodo(todo.id))}>X</a>
