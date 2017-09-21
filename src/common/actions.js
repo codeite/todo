@@ -1,110 +1,36 @@
-// export function init () {
-//   return {type: init.type}
-// }
-// init.type = 'INIT'
-
-// export function loadData (data) {
-//   return {type: loadData.type, data}
-// }
-// loadData.type = 'LOAD_DATA'
-
-// export function addTodo (text) {
-//   return {type: addTodo.type, text,}
-// }
-// addTodo.type = 'ADD_TODO'
-
-// export function todoFromServer (text, id, done) {
-//   return {type: todoFromServer.type, text, id, done}
-// }
-// todoFromServer.type = 'TODO_FROM_SERVER'
-
-// export function deleteTodo (id) {
-//   return {type: deleteTodo.type, id}
-// }
-// deleteTodo.type = 'DELETE_TODO'
-
-// export function deleteTodoFromServer (id) {
-//   return {type: deleteTodoFromServer.type, id}
-// }
-// deleteTodoFromServer.type = 'DELETE_TODO_FROM_SERVER'
-
-function init () {
-  return {type: init.type, sendToServer: true}
-}
-init.type = 'INIT'
-
-function loadData (data) {
-  return {type: loadData.type, data}
-}
-loadData.type = 'LOAD_DATA'
-
-function addTodo (text) {
-  return {type: addTodo.type, sendToServer: true, text}
-}
-addTodo.type = 'ADD_TODO'
-
-function todoFromServer (text, id, done) {
-  return {type: todoFromServer.type, text, id, done}
-}
-todoFromServer.type = 'TODO_FROM_SERVER'
-
-function deleteTodo (id) {
-  return {type: deleteTodo.type, sendToServer: true, id}
-}
-deleteTodo.type = 'DELETE_TODO'
-
-function deleteTodoFromServer (id) {
-  return {type: deleteTodoFromServer.type, id}
-}
-deleteTodoFromServer.type = 'DELETE_TODO_FROM_SERVER'
-
-function addTag (id, tagName) {
-  return {type: addTag.type, sendToServer: true, id, tagName}
-}
-addTag.type = 'ADD_TAG'
-
-function deleteTag (id, tagName) {
-  return {type: deleteTag.type, sendToServer: true, id, tagName}
-}
-deleteTag.type = 'DELETE_TAG'
-
-function setTagsFromServer (id, tags) {
-  return {type: setTagsFromServer.type, id, tags}
-}
-setTagsFromServer.type = 'SET_TAGS_FROM_SERVER'
-
-function showError (errorText) {
-  return {type: showError.type, errorText}
-}
-showError.type = 'SHOW_ERROR'
-
-function setLoading (loadingState) {
-  return {type: setLoading.type, loadingState}
-}
-setLoading.type = 'SET_LOADING'
-
-function setTodoStatus (id, newStatus) {
-  return {type: setTodoStatus.type, sendToServer: true, id, newStatus}
-}
-setTodoStatus.type = 'SET_TODO_STATUS'
-
 function setTodoStatusFromServer (id, newStatus) {
   return {type: setTodoStatusFromServer.type, id, newStatus}
 }
 setTodoStatusFromServer.type = 'SET_TODO_STATUS_FROM_SERVER'
 
-module.exports = {
-  init,
-  loadData,
-  addTodo,
-  todoFromServer,
-  deleteTodo,
-  deleteTodoFromServer,
-  addTag,
-  deleteTag,
-  setTagsFromServer,
-  showError,
-  setLoading,
-  setTodoStatus,
-  setTodoStatusFromServer
+const actions = {
+  init: () => ({type: actions.init.type, sendToServer: true}),
+  loadData: data => ({type: actions.loadData.type, data}),
+  addTodo: text => ({type: actions.addTodo.type, sendToServer: true, text}),
+  todoFromServer: (text, id, done) => ({type: actions.todoFromServer.type, text, id, done}),
+  deleteTodo: id => ({type: actions.deleteTodo.type, sendToServer: true, id}),
+  deleteTodoFromServer: id => ({type: actions.deleteTodoFromServer.type, id}),
+  addTag: (id, tagName) => ({type: actions.addTag.type, sendToServer: true, id, tagName}),
+  deleteTag: (id, tagName) => ({type: actions.deleteTag.type, sendToServer: true, id, tagName}),
+  setTagsFromServer: (id, tags) => ({type: actions.setTagsFromServer.type, id, tags}),
+  showError: errorText => ({type: actions.showError.type, errorText}),
+  setLoading: loadingState => ({type: actions.setLoading.type, loadingState}),
+  setTodoStatus: (id, newStatus) => ({type: actions.setTodoStatus.type, sendToServer: true, id, newStatus}),
+  setTodoStatusFromServer: (id, newStatus) => ({type: actions.setTodoStatusFromServer.type, id, newStatus})
 }
+
+Object.keys(actions).forEach(k => {
+  actions[k].type = toUpperCase(k)
+})
+
+function toUpperCase(str) {
+  if (!str) return ''
+
+  return str
+    .replace(/([A-Z])/g, ' $1')
+    .split(' ')
+    .map(word => word.toUpperCase())
+    .join('_')
+}
+
+module.exports = actions

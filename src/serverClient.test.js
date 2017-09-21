@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 
 import { ServerClient } from './serverClient'
-import { addTodo } from './common/actions'
+import * as actions from './common/actions'
 import { RealServer } from './common/realServer'
 
 describe('ServerClient', () => {
@@ -12,17 +12,27 @@ describe('ServerClient', () => {
     store.dispatch({type: 'UNKNOWN_EVENT'})
   })
 
-  it('should send ADD_TODO event to server', () => {
-    const store = createStore(() => {})
-    const server = new ServerClient(store, new RealServer(store))
-    const spy = jest.fn()
+  ;[
+    actions.init,
+    actions.addTodo,
+    actions.deleteTodo,
+    actions.addTag,
+    actions.deleteTag,
+    actions.setTodoStatus,
 
-    window.fetch = (...args) => {return new Promise(
-      (resolve, reject) => { spy() }
-    )}
+  ].forEach(event => {
+    it(`should send ${event.type} event to server`, () => {
+      const store = createStore(() => {})
+      const server = new ServerClient(store, new RealServer(store))
+      const spy = jest.fn()
 
-    store.dispatch(addTodo('todo1'))
-    expect(spy.mock.calls.length).toBe(1);
+      window.fetch = (...args) => {return new Promise(
+        (resolve, reject) => { spy() }
+      )}
+
+      store.dispatch(event())
+      expect(spy.mock.calls.length).toBe(1);
+    })
   })
 })
 
