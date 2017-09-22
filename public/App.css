@@ -22,23 +22,14 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 } */
-.App {
-  header {
-    display: flex;
-    color: red;
+.App header {
+  display: flex;
+  color: red; }
 
-  }
-
-  main {
-    display: flex;
-
-    .App-tagsSection {
-      min-width: 150px;
-      background-color: #dcc;
-    }
-
-    .App-todosSection {
-      background-color: #cdc;
-    }
-  }
-}
+.App main {
+  display: flex; }
+  .App main .App-tagsSection {
+    min-width: 150px;
+    background-color: #dcc; }
+  .App main .App-todosSection {
+    background-color: #cdc; }

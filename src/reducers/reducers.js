@@ -1,4 +1,4 @@
-import * as actions from './common/actions'
+import * as actions from '../common/actions'
 
 export const appReducer = (state = {}, action = {}) => {
   switch (action) {
@@ -10,6 +10,7 @@ export const appReducer = (state = {}, action = {}) => {
   return {
     ...state,
     todos: todosReducer(state.todos, action),
+    tags: tagsReducer(state.tags, action),
     error: action && action.errorText
   }
 }
@@ -27,10 +28,20 @@ export const todosReducer = (todos = [], action = {}) => {
       }
     ]
     case actions.deleteTodoFromServer.type: return newTodos.filter(x => x.id !== action.id)
-    case 'LOAD_DATA': return action.data
+    case actions.loadData.type: return action.todos
     default: break
   }
   return newTodos
+}
+
+export const tagsReducer = (tags = [], action = {}) => {
+  switch(action.type) {
+    case actions.loadData.type: return action.tags
+    case actions.tagListFromServer.type: return action.tags
+    default: break
+  }
+
+  return tags
 }
 
 const todoReducer = (todo = {}, action = {}) => {
@@ -42,5 +53,4 @@ const todoReducer = (todo = {}, action = {}) => {
       return {...todo, tags: action.tags}
     default: return todo
   }
-
 }

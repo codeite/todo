@@ -4,7 +4,7 @@ import { createStore } from 'redux';
 
 import './index.css';
 import { App } from './App';
-import { appReducer } from './reducers.js'
+import { appReducer } from './reducers/reducers.js'
 import { ServerClient } from './serverClient.js'
 import { init } from './common/actions.js'
 //import { FakeServer } from './common/fakeServer'

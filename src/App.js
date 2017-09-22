@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import createReactClass from 'create-react-class'
 import './App.scss';
 
+import { Tags } from './Tags';
 import { Todos } from './Todos';
 import { TodoCreator } from './TodoCreator';
 
@@ -16,15 +17,22 @@ export class App extends Component {
   componentWillUnmount () { this.unsubscribe && this.unsubscribe() }
 
   render() {
-    // console.log('JSON.stringify(this.state):', JSON.stringify(this.state))
     return (
       <div className="App">
         <header>
           <div style={{height: '1.5em'}}>{this.state.loading ? <img alt='Loading..' src='/spinner.svg' style={{height: '1.5em'}}/> : <div>&nbsp;</div>}</div>
           <div>{this.state.error || ''}</div>
         </header>
-        <TodoCreator store={this.props.store} />
-        <Todos store={this.props.store} todos={this.state.todos} />
+        <main>
+          <section className="App-tagsSection">
+            <Tags store={this.props.store} tags={this.state.tags} />
+          </section>
+
+          <section className="App-todosSection">
+            <TodoCreator store={this.props.store} />
+            <Todos store={this.props.store} todos={this.state.todos} />
+          </section>
+        </main>
       </div>
     );
   }

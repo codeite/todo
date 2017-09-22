@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
 import { TodoCreator } from './TodoCreator'
-import { app } from './reducers.js'
 
 import { shallow } from 'enzyme'
 

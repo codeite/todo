@@ -5,7 +5,7 @@ import { shallow } from 'enzyme'
 import { createStore } from 'redux';
 import { App } from './App';
 import { Todos } from './Todos';
-import { appReducer } from './reducers.js'
+import { appReducer } from './reducers/reducers.js'
 
 it('renders without crashing', () => {
   const store = createStore(appReducer)

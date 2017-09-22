@@ -5,7 +5,7 @@ setTodoStatusFromServer.type = 'SET_TODO_STATUS_FROM_SERVER'
 
 const actions = {
   init: () => ({type: actions.init.type, sendToServer: true}),
-  loadData: data => ({type: actions.loadData.type, data}),
+  loadData: (todos, tags) => ({type: actions.loadData.type, todos, tags}),
   addTodo: text => ({type: actions.addTodo.type, sendToServer: true, text}),
   todoFromServer: (text, id, done) => ({type: actions.todoFromServer.type, text, id, done}),
   deleteTodo: id => ({type: actions.deleteTodo.type, sendToServer: true, id}),
@@ -16,7 +16,8 @@ const actions = {
   showError: errorText => ({type: actions.showError.type, errorText}),
   setLoading: loadingState => ({type: actions.setLoading.type, loadingState}),
   setTodoStatus: (id, newStatus) => ({type: actions.setTodoStatus.type, sendToServer: true, id, newStatus}),
-  setTodoStatusFromServer: (id, newStatus) => ({type: actions.setTodoStatusFromServer.type, id, newStatus})
+  setTodoStatusFromServer: (id, newStatus) => ({type: actions.setTodoStatusFromServer.type, id, newStatus}),
+  tagListFromServer: tags => ({type: actions.tagListFromServer.type, tags})
 }
 
 Object.keys(actions).forEach(k => {

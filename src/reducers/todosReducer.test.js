@@ -1,20 +1,7 @@
-import { appReducer, todosReducer } from './reducers'
-import * as actions from './common/actions'
+import { todosReducer } from './reducers'
+import * as actions from '../common/actions'
 
-describe('app reducer', () => {
-  it('should return correct initial state', () => {
-    const before = undefined
-    const after = {
-      todos: []
-    }
-    const action = undefined
-
-    expect(appReducer(before, action)).toEqual(after)
-  })
-})
-
-
-describe('todos reducer', () => {
+describe('todosReducer', () => {
   it('should return correct initial state', () => {
     const before = undefined
     const after = []
@@ -58,9 +45,10 @@ describe('todos reducer', () => {
       {id: 0, text: 'a todo', done: false}
     ]
 
-    const action = actions.loadData([
-      {id: 0, text: 'a todo', done: false}
-    ])
+    const action = actions.loadData(
+      [{id: 0, text: 'a todo', done: false}],
+      []
+    )
 
     expect(todosReducer(before, action)).toEqual(after)
   })
@@ -99,4 +87,3 @@ describe('todos reducer', () => {
     expect(todosReducer(before, action)).toEqual(after)
   })
 })
-

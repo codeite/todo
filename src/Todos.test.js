@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
 import { Todos, Todo, TodoTags } from './Todos'
-import { appReducer } from './reducers.js'
 
 import { shallow } from 'enzyme'
 
 describe('Todos', () => {
   it('renders without crashing', () => {
-    const store = createStore(appReducer)
+    const store = {}
     const div = document.createElement('div');
 
     ReactDOM.render(<Todos
@@ -39,7 +38,7 @@ describe('Todos', () => {
 
 describe('Todo', () => {
   it('renders without crashing', () => {
-    const store = createStore(appReducer)
+    const store = {}
     const div = document.createElement('div');
 
     ReactDOM.render(<Todo

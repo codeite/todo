@@ -10,7 +10,6 @@ export const Todos = ({store, todos}) => {
 
 export const Todo = ({store, todo}) => {
   return <li className='Todo'>
-    <div>
       <input
         className='Todo-status'
         type="checkbox"
@@ -21,6 +20,5 @@ export const Todo = ({store, todo}) => {
       {' '}
       <a className='Todo-delete' onClick={() => store.dispatch(deleteTodo(todo.id))}>X</a>
       <TodoTags store={store} todo={todo} />
-    </div>
   </li>
 }

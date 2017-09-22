@@ -6,16 +6,6 @@ const database = 'http://localhost:5984'
 class TodoServer {
   constructor (latency) {
     this.latency = latency
-    this.state = {
-      'sam': {
-        nextId: 4,
-        todos: [
-          { id: 1, text: 'S first to do', done: false },
-          { id: 2, text: 'S second to do', done: true },
-          { id: 3, text: 'S third to do', done: false }
-        ]
-      }
-    }
   }
 
   onAction (action, username) {
@@ -24,20 +14,12 @@ class TodoServer {
         console.log('action:', action)
         if (!(action && action.type && action.sendToServer)) return {message: `Should not send ${action.type} to server`, events: []}
 
+        action.type = action.type.toUpperCase()
         if (!this[action.type]) {
           return {message: `Don't know how to process ${action.type} yet`, events: []} // Do nothing
         }
 
         return this[action.type](action, username)
-        // switch (action.type.toUpperCase()) {
-        //   case actions.addTodo.type: return this.onAddTodo(action, username)
-        //   case actions.init.type: return this.onInit(action, username)
-        //   case actions.deleteTodo.type: return this.onDeleteTodo(action, username)
-        //   case actions.addTag.type: return this.onAddTag(action, username)
-        //   case actions.deleteTag.type: return this.onDeleteTag(action, username)
-        //   case actions.setTodoStatusFromServer.type: return this.onSetTodoStatusFromServer(action, username)
-        //   default: return {message: `Don't know how to process ${action.type} yet`, events: []} // Do nothing
-        // }
       })
       .then(result => {
         if(this.latency > 0) {
@@ -85,10 +67,21 @@ class TodoServer {
   }
 }
 
+function calcTags(todos) {
+  const tagCounts = todos
+    .reduce((p, c) => {
+      c.tags.forEach(tag => p[tag] = (p[tag] || 0) + 1)
+      return p
+    }, {})
+  return Object.keys(tagCounts).map(name => {
+    return {name, count: tagCounts[name]}
+  })
+}
+
 TodoServer.prototype[actions.init.type] = function (action, username) {
   return this.getUser(username)
     .then(user => {
-      return [actions.loadData(user.todos)]
+      return [actions.loadData(user.todos, calcTags(user.todos))]
     })
 }
 
@@ -134,12 +127,15 @@ TodoServer.prototype[actions.addTag.type] = function (action, username) {
       if (todo) {
         todo.tags = todo.tags.filter(x => x !== action.tagName)
         todo.tags.unshift(action.tagName)
-        return this.saveUser(username, user).then(() => todo.tags)
+        return this.saveUser(username, user).then(() => ({newTags: todo.tags, user}))
       }
     })
-    .then(newTags => {
+    .then(({newTags, user}) => {
       if (newTags) {
-        return [actions.setTagsFromServer(action.id, newTags)]
+        return [
+          actions.setTagsFromServer(action.id, newTags),
+          actions.tagListFromServer(calcTags(user.todos))
+        ]
       } else {
         return []
       }
@@ -156,12 +152,15 @@ TodoServer.prototype[actions.deleteTag.type] = function (action, username) {
       const todo = user.todos.find(x => x.id == action.id)
       if (todo) {
         todo.tags = todo.tags.filter(x => x !== action.tagName)
-        return this.saveUser(username, user).then(() => todo.tags)
+        return this.saveUser(username, user).then(() => ({newTags: todo.tags, user}))
       }
     })
-    .then(newTags => {
+    .then(({newTags, user}) => {
       if (newTags) {
-        return [actions.setTagsFromServer(action.id, newTags)]
+        return [
+          actions.setTagsFromServer(action.id, newTags),
+          actions.tagListFromServer(calcTags(user.todos))
+        ]
       } else {
         return []
       }
