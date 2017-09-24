@@ -43,6 +43,7 @@ class TodoServer {
             user.todos.forEach(todo => {
               if (!Array.isArray(todo.tags)) todo.tags = []
             })
+            if (!Array.isArray(user.tags)) user.tags = []
             return user
           })
         }
@@ -67,12 +68,14 @@ class TodoServer {
   }
 }
 
-function calcTags(todos) {
+function calcTags({todos = [], tags = []}) {
   const tagCounts = todos
     .reduce((p, c) => {
       c.tags.forEach(tag => p[tag] = (p[tag] || 0) + 1)
       return p
     }, {})
+  tags.forEach(tag => tagCounts[tag.name] = tagCounts[tag.name] || 0)
+  console.log('tagCounts:', tagCounts)
   return Object.keys(tagCounts).map(name => {
     return {name, count: tagCounts[name]}
   })
@@ -81,7 +84,8 @@ function calcTags(todos) {
 TodoServer.prototype[actions.init.type] = function (action, username) {
   return this.getUser(username)
     .then(user => {
-      return [actions.loadData(user.todos, calcTags(user.todos))]
+      user.tags = calcTags(user)
+      return [actions.loadData(user.todos, user.tags)]
     })
 }
 
@@ -94,6 +98,7 @@ TodoServer.prototype[actions.addTodo.type] = function (action, username) {
         done: false
       }
       user.todos.push(newTodo)
+      user.tags = calcTags(user)
       return this.saveUser(username, user).then(() => newTodo)
     })
     .then(newTodo => {
@@ -109,10 +114,14 @@ TodoServer.prototype[actions.deleteTodo.type] = function (action, username) {
   return this.getUser(username)
     .then(user => {
       user.todos = user.todos.filter(x => x.id !== action.id)
-      return this.saveUser(username, user).then(() => action.id)
+      user.tags = calcTags(user)
+      return this.saveUser(username, user).then(() => ({id: action.id, user}))
     })
-    .then(id => {
-      return [actions.deleteTodoFromServer(id)]
+    .then((id, user) => {
+      return [
+        actions.deleteTodoFromServer(id),
+        actions.tagListFromServer(calcTags(user.todos))
+      ]
     })
     .catch(err => {
       console.log('Error while adding todo:', err)
@@ -127,14 +136,16 @@ TodoServer.prototype[actions.addTag.type] = function (action, username) {
       if (todo) {
         todo.tags = todo.tags.filter(x => x !== action.tagName)
         todo.tags.unshift(action.tagName)
-        return this.saveUser(username, user).then(() => ({newTags: todo.tags, user}))
+        user.tags = calcTags(user)
+        return this.saveUser(username, user)
+          .then(() => ({newTags: todo.tags, user}))
       }
     })
     .then(({newTags, user}) => {
       if (newTags) {
         return [
           actions.setTagsFromServer(action.id, newTags),
-          actions.tagListFromServer(calcTags(user.todos))
+          actions.tagListFromServer(user.tags)
         ]
       } else {
         return []
