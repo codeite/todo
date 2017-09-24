@@ -17,7 +17,7 @@ describe('ServerClient', () => {
     actions.addTodo,
     actions.deleteTodo,
     actions.addTag,
-    actions.deleteTag,
+    actions.removeTag,
     actions.setTodoStatus,
 
   ].forEach(event => {

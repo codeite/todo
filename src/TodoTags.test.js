@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
 import { TodoTags } from './TodoTags'
+import { removeTag } from './common/actions'
 
 import { shallow } from 'enzyme'
 
@@ -74,7 +75,7 @@ describe('TodoTags', () => {
     expect(event.tagName).toBe('tag1')
   })
 
-  it('should raise a "DELETE_TAG" event when add tag delete pressed', () => {
+  it('should raise a "REMOVE_TAG" event when add tag delete pressed', () => {
     const dispatch = jest.fn()
     const store = {
       dispatch
@@ -90,7 +91,7 @@ describe('TodoTags', () => {
 
     expect(dispatch.mock.calls.length).toBe(1);
     const event = dispatch.mock.calls[0][0]
-    expect(event.type).toBe('DELETE_TAG')
+    expect(event.type).toBe('REMOVE_TAG')
     expect(event.id).toBe(14)
   })
 })
