@@ -1,6 +1,6 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
-import {addTag, removeTag} from './common/actions'
+import {addTag, removeTag} from './common/commandActions'
 
 export const TodoTags = createReactClass({
   getInitialState() {

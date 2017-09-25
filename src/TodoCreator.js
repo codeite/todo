@@ -1,7 +1,7 @@
 import React from 'react';
 import createReactClass from 'create-react-class'
 
-import { addTodo } from './common/actions'
+import { addTodo } from './common/commandActions'
 
 export const TodoCreator = createReactClass({
   getInitialState() {

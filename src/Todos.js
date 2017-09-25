@@ -1,5 +1,5 @@
 import React from 'react'
-import {deleteTodo, setTodoStatus} from './common/actions'
+import {deleteTodo, setTodoStatus} from './common/commandActions'
 import {TodoTags} from './TodoTags'
 
 export const Todos = ({store, todos}) => {

@@ -1,5 +1,4 @@
 import React from 'react'
-import {} from './common/actions'
 
 export const Tags = ({store, tags}) => {
   return <div className='Tags'>

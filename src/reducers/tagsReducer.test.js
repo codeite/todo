@@ -1,5 +1,5 @@
 import { tagsReducer } from './reducers'
-import * as actions from '../common/actions'
+import * as dataActions from '../common/dataActions'
 
 describe('tagsReducer', () => {
   it('should return correct initial state', () => {
@@ -16,7 +16,7 @@ describe('tagsReducer', () => {
       {name: 'tagOne'}
     ]
 
-    const action = actions.loadData(
+    const action = dataActions.loadData(
       [],
       [{name: 'tagOne'}]
     )
@@ -30,7 +30,7 @@ describe('tagsReducer', () => {
       {name: 'tagOne'}
     ]
 
-    const action = actions.tagListFromServer(
+    const action = dataActions.tagListFromServer(
       [{name: 'tagOne'}]
     )
 

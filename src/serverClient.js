@@ -3,7 +3,6 @@ export class ServerClient {
     this.store = store
     const oldDispatch = store.dispatch.bind(store)
     store.dispatch = action => {
-      // console.log('action:', action)
       oldDispatch(action)
       server.onAction(action)
         .then(events => {
@@ -14,6 +13,5 @@ export class ServerClient {
           }
         })
     }
-    // this.store.subscribe(this.onAction)
   }
 }

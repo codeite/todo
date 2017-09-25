@@ -1,4 +1,4 @@
-import * as actions from './actions'
+import { setLoading, showError } from './common/dataActions'
 
 // const actionsToSendToServer = [
 //   actions.init.type,
@@ -9,7 +9,7 @@ import * as actions from './actions'
 //   actions.setTodoStatus.type
 // ]
 
-export class RealServer {
+export class FetchWrapper {
   constructor (store, urlPrefix) {
     this.store = store
     this.urlPrefix = urlPrefix
@@ -20,7 +20,7 @@ export class RealServer {
     // console.log('onAction :: action:', action)
     if (!action || !action.type || !action.sendToServer) return Promise.resolve([])
 
-    this.store.dispatch(actions.setLoading(true))
+    this.store.dispatch(setLoading(true))
 
     const options = {
       method: 'POST',
@@ -34,8 +34,8 @@ export class RealServer {
     return window.fetch(this.urlPrefix + '/redux', options)
       .then(res => {
         if (!res.ok) {
-          console.log('Action failed:', actions)
-          return res.text().then(text => ({events: [actions.showError(res.status + ' ' + text)]}))
+          console.log('Action failed:', action)
+          return res.text().then(text => ({events: [showError(res.status + ' ' + text)]}))
         }
         else return res.json()
       })
@@ -43,7 +43,7 @@ export class RealServer {
         console.log('response.message:', response.message)
         this.pending--
         if (this.pending === 0) {
-          response.events.unshift(actions.setLoading(false))
+          response.events.unshift(setLoading(false))
         }
         return response.events
       })

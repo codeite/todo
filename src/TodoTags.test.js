@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
 import { TodoTags } from './TodoTags'
-import { removeTag } from './common/actions'
+import { removeTag } from './common/commandActions'
 
 import { shallow } from 'enzyme'
 

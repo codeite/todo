@@ -1,5 +1,5 @@
 import { todosReducer } from './reducers'
-import * as actions from '../common/actions'
+import * as dataActions from '../common/dataActions'
 
 describe('todosReducer', () => {
   it('should return correct initial state', () => {
@@ -19,7 +19,7 @@ describe('todosReducer', () => {
         done: true
       }
     ]
-    const action = actions.todoFromServer('a todo', 5, true)
+    const action = dataActions.todoFromServer('a todo', 5, true)
 
     expect(todosReducer(before, action)).toEqual(after)
   })
@@ -34,7 +34,7 @@ describe('todosReducer', () => {
       {id: 4, text: 'four'},
       {id: 6, text: 'six'}
     ]
-    const action = actions.deleteTodoFromServer(5)
+    const action = dataActions.deleteTodoFromServer(5)
 
     expect(todosReducer(before, action)).toEqual(after)
   })
@@ -45,7 +45,7 @@ describe('todosReducer', () => {
       {id: 0, text: 'a todo', done: false}
     ]
 
-    const action = actions.loadData(
+    const action = dataActions.loadData(
       [{id: 0, text: 'a todo', done: false}],
       []
     )
@@ -65,7 +65,7 @@ describe('todosReducer', () => {
       {id: 14, text: 'a todo', done: false},
     ]
 
-    const action = actions.setTagsFromServer(13, ['tag1'])
+    const action = dataActions.setTagsFromServer(13, ['tag1'])
 
     expect(todosReducer(before, action)).toEqual(after)
   })
@@ -82,7 +82,7 @@ describe('todosReducer', () => {
       {id: 14, text: 'a todo', done: false},
     ]
 
-    const action = actions.setTodoStatusFromServer(13, true)
+    const action = dataActions.setTodoStatusFromServer(13, true)
 
     expect(todosReducer(before, action)).toEqual(after)
   })
