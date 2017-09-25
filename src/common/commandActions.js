@@ -1,15 +1,18 @@
-const actions = {
-  init: () => ({type: actions.init.type, sendToServer: true}),
-  addTodo: text => ({type: actions.addTodo.type, sendToServer: true, text}),
-  deleteTodo: id => ({type: actions.deleteTodo.type, sendToServer: true, id}),
-  addTag: (id, tagName) => ({type: actions.addTag.type, sendToServer: true, id, tagName}),
-  removeTag: (id, tagName) => ({type: actions.removeTag.type, sendToServer: true, id, tagName}),
-  setTodoStatus: (id, newStatus) => ({type: actions.setTodoStatus.type, sendToServer: true, id, newStatus}),
+const actions = {}
+
+function sendToServerAction(name, func) {
+  const type = toUpperCase(name)
+  const sendToServer = true
+  actions[name] = (...args) => ({...func(...args), type, sendToServer})
+  actions[name].type = type
 }
 
-Object.keys(actions).forEach(k => {
-  actions[k].type = toUpperCase(k)
-})
+sendToServerAction('init', () => ({}))
+sendToServerAction('addTodo', (text) => ({text}))
+sendToServerAction('deleteTodo', (id) => ({id}))
+sendToServerAction('addTag', (id, tagName) => ({id, tagName}))
+sendToServerAction('removeTag', (id, tagName) => ({id, tagName}))
+sendToServerAction('setTodoStatus', (id, newStatus) => ({id, newStatus}))
 
 function toUpperCase(str) {
   if (!str) return ''
