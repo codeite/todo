@@ -1,6 +1,8 @@
 const http = require('http')
-const TodoServer = require('./todoServer')
-const todoServer = new TodoServer(0)
+const fetch = require('node-fetch')
+const TodoServer = require('./TodoServer')
+const UserStore = require('./UserStore')
+const todoServer = new TodoServer(new UserStore('http://localhost:5984', fetch))
 
 //create a server object:
 http.createServer((req, res) => {

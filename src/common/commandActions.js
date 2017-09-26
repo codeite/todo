@@ -3,7 +3,12 @@ const actions = {}
 function sendToServerAction(name, func) {
   const type = toUpperCase(name)
   const sendToServer = true
-  actions[name] = (...args) => ({...func(...args), type, sendToServer})
+  actions[name] = (...args) => {
+    const action =func(...args)
+    action.type = type
+    action.sendToServer = sendToServer
+    return action
+  }
   actions[name].type = type
 }
 
