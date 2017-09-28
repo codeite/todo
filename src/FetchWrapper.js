@@ -1,14 +1,5 @@
 import { setLoading, showError } from './common/dataActions'
 
-// const actionsToSendToServer = [
-//   actions.init.type,
-//   actions.addTodo.type,
-//   actions.deleteTodo.type,
-//   actions.addTag.type,
-//   actions.deleteTag.type,
-//   actions.setTodoStatus.type
-// ]
-
 export class FetchWrapper {
   constructor (store, urlPrefix) {
     this.store = store
@@ -46,6 +37,13 @@ export class FetchWrapper {
           response.events.unshift(setLoading(false))
         }
         return response.events
+      })
+      .then(events => {
+        if (events && Array.isArray(events)) {
+          events.forEach(event => {
+            this.store.dispatch(event)
+          })
+        }
       })
   }
 }

@@ -5,13 +5,6 @@ export class ServerClient {
     store.dispatch = action => {
       oldDispatch(action)
       server.onAction(action)
-        .then(events => {
-          if (events && Array.isArray(events)) {
-            events.forEach(event => {
-              this.store.dispatch(event)
-            })
-          }
-        })
     }
   }
 }
