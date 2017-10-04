@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
-import { TodoTags } from './TodoTags'
+import { TodoTags } from './TodoLabels'
 import { removeTag } from './common/commandActions'
 
 import { shallow } from 'enzyme'

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import createReactClass from 'create-react-class'
 import './App.scss';
 
-import { Tags } from './Tags';
+import { Tags } from './Labels';
 import { Todos } from './Todos';
 import { TodoCreator } from './TodoCreator';
 

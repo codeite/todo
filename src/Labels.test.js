@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
-import { Tags } from './Tags'
+import { Tags } from './Labels'
 
 import { shallow } from 'enzyme'
 
