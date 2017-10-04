@@ -28,7 +28,7 @@
 
 .App main {
   display: flex; }
-  .App main .App-tagsSection {
+  .App main .App-labelsSection {
     min-width: 150px;
     background-color: #dcc; }
   .App main .App-todosSection {

@@ -2,57 +2,57 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
-import { TodoTags } from './TodoLabels'
-import { removeTag } from './common/commandActions'
+import { TodoLabels } from './TodoLabels'
+import { removeLabel } from './common/commandActions'
 
 import { shallow } from 'enzyme'
 
-describe('TodoTags', () => {
-  it('should render the tags', () => {
+describe('TodoLabels', () => {
+  it('should render the labels', () => {
     const todo = {
       id: 23,
-      tags: ['alpha', 'bravo', 'charlie']
+      labels: ['alpha', 'bravo', 'charlie']
     }
 
-    const wrapper = shallow(<TodoTags todo={todo} />)
+    const wrapper = shallow(<TodoLabels todo={todo} />)
 
-    const tags = wrapper.find('.TodoTags-tag-text')
-    expect(tags.length).toBe(3)
-    expect(tags.at(0).text()).toBe('alpha')
-    expect(tags.at(1).text()).toBe('bravo')
-    expect(tags.at(2).text()).toBe('charlie')
+    const labels = wrapper.find('.TodoLabels-label-text')
+    expect(labels.length).toBe(3)
+    expect(labels.at(0).text()).toBe('alpha')
+    expect(labels.at(1).text()).toBe('bravo')
+    expect(labels.at(2).text()).toBe('charlie')
   })
 
-  it('should render a delete button for each tag', () => {
+  it('should render a delete button for each label', () => {
     const todo = {
       id: 23,
-      tags: ['alpha', 'bravo', 'charlie']
+      labels: ['alpha', 'bravo', 'charlie']
     }
 
-    const wrapper = shallow(<TodoTags todo={todo} />)
+    const wrapper = shallow(<TodoLabels todo={todo} />)
 
-    const tags = wrapper.find('.TodoTags-tag-delete')
-    expect(tags.length).toBe(3)
-    expect(tags.at(0).text()).toBe('♻')
-    expect(tags.at(0).getNode().props.title).toBe('Delete tag alpha')
-    expect(tags.at(1).text()).toBe('♻')
-    expect(tags.at(1).getNode().props.title).toBe('Delete tag bravo')
-    expect(tags.at(2).text()).toBe('♻')
-    expect(tags.at(2).getNode().props.title).toBe('Delete tag charlie')
+    const labels = wrapper.find('.TodoLabels-label-delete')
+    expect(labels.length).toBe(3)
+    expect(labels.at(0).text()).toBe('♻')
+    expect(labels.at(0).getNode().props.title).toBe('Delete label alpha')
+    expect(labels.at(1).text()).toBe('♻')
+    expect(labels.at(1).getNode().props.title).toBe('Delete label bravo')
+    expect(labels.at(2).text()).toBe('♻')
+    expect(labels.at(2).getNode().props.title).toBe('Delete label charlie')
   })
 
-  it('should have a form to add new tags', () => {
+  it('should have a form to add new labels', () => {
     const todo = {
       id: 23
     }
 
-    const wrapper = shallow(<TodoTags todo={todo} />)
+    const wrapper = shallow(<TodoLabels todo={todo} />)
 
-    const newTag = wrapper.find('form.TodoTags')
-    expect(newTag.length).toBe(1)
+    const newLabel = wrapper.find('form.TodoLabels')
+    expect(newLabel.length).toBe(1)
   })
 
-  it('should raise an "ADD_TAG" event when add tag form submitted and prevent default submission', () => {
+  it('should raise an "ADD_LABEL" event when add label form submitted and prevent default submission', () => {
     const dispatch = jest.fn()
     const preventDefault = jest.fn()
     const store = {
@@ -63,35 +63,35 @@ describe('TodoTags', () => {
       id: 14,
     }
 
-    const wrapper = shallow(<TodoTags todo={todo} store={store} />)
-    wrapper.find('input').simulate('change', { target: { value: 'tag1' } })
+    const wrapper = shallow(<TodoLabels todo={todo} store={store} />)
+    wrapper.find('input').simulate('change', { target: { value: 'label1' } })
     wrapper.find('form').simulate('submit', fakeEvent);
 
     expect(preventDefault.mock.calls.length).toBe(1);
     expect(dispatch.mock.calls.length).toBe(1);
     const event = dispatch.mock.calls[0][0]
-    expect(event.type).toBe('ADD_TAG')
+    expect(event.type).toBe('ADD_LABEL')
     expect(event.id).toBe(14)
-    expect(event.tagName).toBe('tag1')
+    expect(event.labelName).toBe('label1')
   })
 
-  it('should raise a "REMOVE_TAG" event when add tag delete pressed', () => {
+  it('should raise a "REMOVE_LABEL" event when add label delete pressed', () => {
     const dispatch = jest.fn()
     const store = {
       dispatch
     }
     const todo = {
       id: 14,
-      tags: ['a']
+      labels: ['a']
     }
 
-    const wrapper = shallow(<TodoTags todo={todo} store={store} />)
+    const wrapper = shallow(<TodoLabels todo={todo} store={store} />)
     expect(wrapper.length).toBe(1)
-    wrapper.find('.TodoTags-tag-delete').simulate('click');
+    wrapper.find('.TodoLabels-label-delete').simulate('click');
 
     expect(dispatch.mock.calls.length).toBe(1);
     const event = dispatch.mock.calls[0][0]
-    expect(event.type).toBe('REMOVE_TAG')
+    expect(event.type).toBe('REMOVE_LABEL')
     expect(event.id).toBe(14)
   })
 })

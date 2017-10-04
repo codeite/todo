@@ -15,9 +15,9 @@ function sendToServerAction(name, func) {
 sendToServerAction('init', () => ({}))
 sendToServerAction('addTodo', (text) => ({text}))
 sendToServerAction('deleteTodo', (id) => ({id}))
-sendToServerAction('addTag', (id, tagName) => ({id, tagName}))
-sendToServerAction('removeTag', (id, tagName) => ({id, tagName}))
-sendToServerAction('deleteTag', (tagName) => ({tagName}))
+sendToServerAction('addLabel', (id, labelName) => ({id, labelName}))
+sendToServerAction('removeLabel', (id, labelName) => ({id, labelName}))
+sendToServerAction('deleteLabel', (labelName) => ({labelName}))
 sendToServerAction('setTodoStatus', (id, newStatus) => ({id, newStatus}))
 
 function toUpperCase(str) {

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
-import { Todos, Todo, TodoTags } from './Todos'
+import { Todos, Todo, TodoLabels } from './Todos'
 
 import { shallow } from 'enzyme'
 
@@ -97,7 +97,7 @@ describe('Todo', () => {
     expect(button.text()).toBe('X')
   })
 
-  it('should not mind about missing tags', () => {
+  it('should not mind about missing labels', () => {
     const todo = {
       id: 23,
       text: 'my todo text',

@@ -1,18 +1,18 @@
 import React from 'react'
 import { Icon } from './Icon'
-import { deleteTag } from './common/commandActions'
+import { deleteLabel } from './common/commandActions'
 
-export const Tags = ({store, tags}) => {
-  return <div className='Tags'>
-    <h2>Tags</h2>
+export const Labels = ({store, labels}) => {
+  return <div className='Labels'>
+    <h2>Labels</h2>
     <ul>
-      {tags.map(tag => <li className='Tags-tag' key={tag.name}>
+      {labels.map(label => <li className='Labels-label' key={label.name}>
         <span>
-          <span className='Tags-name'>{tag.name}</span>
+          <span className='Labels-name'>{label.name}</span>
         </span>
         <span>
-          <span className='Tags-count'>{tag.count}</span>
-          <a className='Tags-delete' onClick={() => store.dispatch(deleteTag(tag.name))} >
+          <span className='Labels-count'>{label.count}</span>
+          <a className='Labels-delete' onClick={() => store.dispatch(deleteLabel(label.name))} >
             <Icon iconName='cancel-circle' alt='Delete' />
           </a>
         </span>

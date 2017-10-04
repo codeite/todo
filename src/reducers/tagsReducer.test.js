@@ -1,40 +1,40 @@
-import { tagsReducer } from './reducers'
+import { labelsReducer } from './reducers'
 import * as dataActions from '../common/dataActions'
 
-describe('tagsReducer', () => {
+describe('labelsReducer', () => {
   it('should return correct initial state', () => {
     const before = undefined
     const after = []
     const action = undefined
 
-    expect(tagsReducer(before, action)).toEqual(after)
+    expect(labelsReducer(before, action)).toEqual(after)
   })
 
   it('should be able to load data', () => {
     const before = []
     const after = [
-      {name: 'tagOne'}
+      {name: 'labelOne'}
     ]
 
     const action = dataActions.loadData(
       [],
-      [{name: 'tagOne'}]
+      [{name: 'labelOne'}]
     )
 
-    expect(tagsReducer(before, action)).toEqual(after)
+    expect(labelsReducer(before, action)).toEqual(after)
   })
 
-  it('should set tags from server', () => {
+  it('should set labels from server', () => {
     const before = []
     const after = [
-      {name: 'tagOne'}
+      {name: 'labelOne'}
     ]
 
-    const action = dataActions.tagListFromServer(
-      [{name: 'tagOne'}]
+    const action = dataActions.labelListFromServer(
+      [{name: 'labelOne'}]
     )
 
-    expect(tagsReducer(before, action)).toEqual(after)
+    expect(labelsReducer(before, action)).toEqual(after)
   })
 
 

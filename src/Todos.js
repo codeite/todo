@@ -1,6 +1,6 @@
 import React from 'react'
 import {deleteTodo, setTodoStatus} from './common/commandActions'
-import {TodoTags} from './TodoLabels'
+import {TodoLabels} from './TodoLabels'
 
 export const Todos = ({store, todos}) => {
   return <ul>
@@ -19,6 +19,6 @@ export const Todo = ({store, todo}) => {
       <span className='Todo-text'>{todo.text}</span>
       {' '}
       <a className='Todo-delete' onClick={() => store.dispatch(deleteTodo(todo.id))}>X</a>
-      <TodoTags store={store} todo={todo} />
+      <TodoLabels store={store} todo={todo} />
   </li>
 }

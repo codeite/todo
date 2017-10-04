@@ -25,18 +25,18 @@ class TodoServer {
       })
   }
 
-  calcTags({todos = [], tags = []}) {
-    // console.log('calcTags: todos', todos)
-    const tagCounts = todos
+  calcLabels({todos = [], labels = []}) {
+    // console.log('calcLabels: todos', todos)
+    const labelCounts = todos
       .reduce((p, c) => {
-        (c.tags||[]).forEach(tag => p[tag] = (p[tag] || 0) + 1)
+        (c.labels||[]).forEach(label => p[label] = (p[label] || 0) + 1)
         return p
       }, {})
-    // console.log('calcTags: tagCounts', tagCounts)
-    tags.forEach(tag => tagCounts[tag.name] = tagCounts[tag.name] || 0)
-    this.logger('tagCounts:', tagCounts)
-    return Object.keys(tagCounts).map(name => {
-      return {name, count: tagCounts[name]}
+    // console.log('calcLabels: labelCounts', labelCounts)
+    labels.forEach(label => labelCounts[label.name] = labelCounts[label.name] || 0)
+    this.logger('labelCounts:', labelCounts)
+    return Object.keys(labelCounts).map(name => {
+      return {name, count: labelCounts[name]}
     })
   }
 }
@@ -44,8 +44,8 @@ class TodoServer {
 TodoServer.prototype[commandActions.init.type] = function (action, username) {
   return this.userStore.getUser(username)
     .then(user => {
-      user.tags = this.calcTags(user)
-      return [dataActions.loadData(user.todos, user.tags)]
+      user.labels = this.calcLabels(user)
+      return [dataActions.loadData(user.todos, user.labels)]
     })
 }
 
@@ -58,7 +58,7 @@ TodoServer.prototype[commandActions.addTodo.type] = function (action, username) 
         done: false
       }
       user.todos.push(newTodo)
-      user.tags = this.calcTags(user)
+      user.labels = this.calcLabels(user)
       return this.userStore.saveUser(username, user).then(() => newTodo)
     })
     .then(newTodo => {
@@ -75,13 +75,13 @@ TodoServer.prototype[commandActions.deleteTodo.type] = function (action, usernam
   return this.userStore.getUser(username)
     .then(user => {
       user.todos = user.todos.filter(x => x.id !== action.id)
-      user.tags = this.calcTags(user)
+      user.labels = this.calcLabels(user)
       return this.userStore.saveUser(username, user).then(() => user)
     })
     .then(user => {
       return [
         dataActions.deleteTodoFromServer(action.id),
-        dataActions.tagListFromServer(user.tags)
+        dataActions.labelListFromServer(user.labels)
       ]
     })
     .catch(err => {
@@ -90,25 +90,25 @@ TodoServer.prototype[commandActions.deleteTodo.type] = function (action, usernam
     })
 }
 
-TodoServer.prototype[commandActions.addTag.type] = function (action, username) {
+TodoServer.prototype[commandActions.addLabel.type] = function (action, username) {
   return this.userStore.getUser(username)
     .then(user => {
       const todo = user.todos.find(x => x.id == action.id)
       if (todo) {
-        todo.tags = todo.tags.filter(x => x !== action.tagName)
-        todo.tags.unshift(action.tagName)
-        user.tags = this.calcTags(user)
+        todo.labels = todo.labels.filter(x => x !== action.labelName)
+        todo.labels.unshift(action.labelName)
+        user.labels = this.calcLabels(user)
         return this.userStore.saveUser(username, user)
-          .then(() => ({newTags: todo.tags, user}))
+          .then(() => ({newLabels: todo.labels, user}))
       } else {
         return {}
       }
     })
-    .then(({newTags, user}) => {
-      if (newTags) {
+    .then(({newLabels, user}) => {
+      if (newLabels) {
         return [
-          dataActions.setTagsFromServer(action.id, newTags),
-          dataActions.tagListFromServer(user.tags)
+          dataActions.setLabelsFromServer(action.id, newLabels),
+          dataActions.labelListFromServer(user.labels)
         ]
       } else {
         return []
@@ -120,21 +120,21 @@ TodoServer.prototype[commandActions.addTag.type] = function (action, username) {
     })
 }
 
-TodoServer.prototype[commandActions.removeTag.type] = function (action, username) {
+TodoServer.prototype[commandActions.removeLabel.type] = function (action, username) {
   return this.userStore.getUser(username)
     .then(user => {
       const todo = user.todos.find(x => x.id == action.id)
       if (todo) {
-        todo.tags = todo.tags.filter(x => x !== action.tagName)
-        user.tags = this.calcTags(user)
-        return this.userStore.saveUser(username, user).then(() => ({newTags: todo.tags, user}))
+        todo.labels = todo.labels.filter(x => x !== action.labelName)
+        user.labels = this.calcLabels(user)
+        return this.userStore.saveUser(username, user).then(() => ({newLabels: todo.labels, user}))
       }
     })
-    .then(({newTags, user}) => {
-      if (newTags) {
+    .then(({newLabels, user}) => {
+      if (newLabels) {
         return [
-          dataActions.setTagsFromServer(action.id, newTags),
-          dataActions.tagListFromServer(user.tags)
+          dataActions.setLabelsFromServer(action.id, newLabels),
+          dataActions.labelListFromServer(user.labels)
         ]
       } else {
         return []
@@ -168,21 +168,21 @@ TodoServer.prototype[commandActions.setTodoStatus.type] = function (action, user
     })
 }
 
-TodoServer.prototype[commandActions.deleteTag.type] = function (action, username) {
+TodoServer.prototype[commandActions.deleteLabel.type] = function (action, username) {
   return this.userStore.getUser(username)
     .then(user => {
-      const todos = user.todos.filter(x => x.tags.includes(action.tagName))
+      const todos = user.todos.filter(x => x.labels.includes(action.labelName))
       todos.forEach(todo => {
-        todo.tags = todo.tags.filter(x => x !== action.tagName)
+        todo.labels = todo.labels.filter(x => x !== action.labelName)
       })
 
-      user.tags = user.tags.filter(x => x.name !== action.tagName)
+      user.labels = user.labels.filter(x => x.name !== action.labelName)
       return this.userStore.saveUser(username, user).then(() => ({todos, user}))
     })
     .then(({todos, user}) => {
-      const response = [dataActions.tagListFromServer(user.tags)]
+      const response = [dataActions.labelListFromServer(user.labels)]
       todos.forEach(todo => {
-        response.push(dataActions.setTagsFromServer(todo.id, todo.tags))
+        response.push(dataActions.setLabelsFromServer(todo.id, todo.labels))
       })
       return response
     })

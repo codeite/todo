@@ -18,9 +18,9 @@ class UserStore {
             if (!user.nextId > 0) user.nextId = 1
             if (!Array.isArray(user.todos)) user.todos = []
             user.todos.forEach(todo => {
-              if (!Array.isArray(todo.tags)) todo.tags = []
+              if (!Array.isArray(todo.labels)) todo.labels = []
             })
-            if (!Array.isArray(user.tags)) user.tags = []
+            if (!Array.isArray(user.labels)) user.labels = []
             return user
           })
         }

@@ -5,7 +5,7 @@ describe('appReducer', () => {
     const before = undefined
     const after = {
       todos: [],
-      tags: []
+      labels: []
     }
     const action = undefined
 

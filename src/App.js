@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import createReactClass from 'create-react-class'
 import './App.scss';
 
-import { Tags } from './Labels';
+import { Labels } from './Labels';
 import { Todos } from './Todos';
 import { TodoCreator } from './TodoCreator';
 
@@ -24,8 +24,8 @@ export class App extends Component {
           <div>{this.state.error || ''}</div>
         </header>
         <main>
-          <section className="App-tagsSection">
-            <Tags store={this.props.store} tags={this.state.tags} />
+          <section className="App-labelsSection">
+            <Labels store={this.props.store} labels={this.state.labels} />
           </section>
 
           <section className="App-todosSection">

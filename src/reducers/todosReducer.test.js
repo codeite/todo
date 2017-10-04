@@ -53,7 +53,7 @@ describe('todosReducer', () => {
     expect(todosReducer(before, action)).toEqual(after)
   })
 
-  it('should be set tags from server', () => {
+  it('should be set labels from server', () => {
     const before = [
       {id: 12, text: 'a todo', done: false},
       {id: 13, text: 'a todo', done: false},
@@ -61,11 +61,11 @@ describe('todosReducer', () => {
     ]
     const after = [
       {id: 12, text: 'a todo', done: false},
-      {id: 13, text: 'a todo', done: false, tags: ['tag1']},
+      {id: 13, text: 'a todo', done: false, labels: ['label1']},
       {id: 14, text: 'a todo', done: false},
     ]
 
-    const action = dataActions.setTagsFromServer(13, ['tag1'])
+    const action = dataActions.setLabelsFromServer(13, ['label1'])
 
     expect(todosReducer(before, action)).toEqual(after)
   })

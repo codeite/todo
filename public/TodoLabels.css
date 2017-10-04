@@ -1,20 +1,20 @@
-.TodoTags {
+.TodoLabels {
   display: inline; }
-  .TodoTags input {
+  .TodoLabels input {
     width: 20px; }
-  .TodoTags button {
+  .TodoLabels button {
     Xdisplay: none;
     position: absolute;
     transition: all 0.5s linear;
     opacity: 0;
     z-index: -1; }
-  .TodoTags input:focus + button {
+  .TodoLabels input:focus + button {
     Xdisplay: initial;
     opacity: 1;
     z-index: 1; }
-  .TodoTags ol {
+  .TodoLabels ol {
     display: inline-block; }
-  .TodoTags li {
+  .TodoLabels li {
     display: inline-block;
     border-style: solid;
     border-width: 0.5px 0.5px 0.2px 0.2px;
@@ -23,7 +23,7 @@
     padding: 1px;
     border-radius: 4px;
     background-color: #5BBD5B; }
-  .TodoTags li::before {
+  .TodoLabels li::before {
     content: '#';
     text-shadow: 1px 1px #fff;
     border-right: 0.5px solid #fff;
@@ -31,7 +31,7 @@
     opacity: 0.3;
     padding-right: 4px;
     margin-right: 2px; }
-  .TodoTags .TodoTags-tag-delete {
+  .TodoLabels .TodoLabels-label-delete {
     text-shadow: 1px 1px #fff;
     border-left: 0.5px solid black;
     box-shadow: -0.5px 0px white;

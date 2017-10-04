@@ -10,7 +10,7 @@ export const appReducer = (state = {}, action = {}) => {
   return {
     ...state,
     todos: todosReducer(state.todos, action),
-    tags: tagsReducer(state.tags, action),
+    labels: labelsReducer(state.labels, action),
     error: action && action.errorText
   }
 }
@@ -34,14 +34,14 @@ export const todosReducer = (todos = [], action = {}) => {
   return newTodos
 }
 
-export const tagsReducer = (tags = [], action = {}) => {
+export const labelsReducer = (labels = [], action = {}) => {
   switch(action.type) {
-    case dataActions.loadData.type: return action.tags
-    case dataActions.tagListFromServer.type: return action.tags
+    case dataActions.loadData.type: return action.labels
+    case dataActions.labelListFromServer.type: return action.labels
     default: break
   }
 
-  return tags
+  return labels
 }
 
 const todoReducer = (todo = {}, action = {}) => {
@@ -49,8 +49,8 @@ const todoReducer = (todo = {}, action = {}) => {
   switch (action.type) {
     case dataActions.setTodoStatusFromServer.type:
       return {...todo, done: action.newStatus}
-    case dataActions.setTagsFromServer.type:
-      return {...todo, tags: action.tags}
+    case dataActions.setLabelsFromServer.type:
+      return {...todo, labels: action.labels}
     default: return todo
   }
 }

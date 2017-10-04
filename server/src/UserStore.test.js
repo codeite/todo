@@ -21,15 +21,15 @@ describe('UserStore', () => {
       delete mockData[key]
     })
 
-    mockData['db/todo/validUser'] = {todos: [], tags: [], nextId: 1}
-    mockData['db/todo/userWithOneTodo'] = {todos: [{}], tags: [], nextId: 2}
+    mockData['db/todo/validUser'] = {todos: [], labels: [], nextId: 1}
+    mockData['db/todo/userWithOneTodo'] = {todos: [{}], labels: [], nextId: 2}
   })
 
   it('should be able to get a user', () => {
     expect.assertions(1)
 
     return userStore.getUser('validUser').then(user => {
-      expect(user).toMatchObject({todos: [], tags: [], nextId: 1})
+      expect(user).toMatchObject({todos: [], labels: [], nextId: 1})
     })
   })
 
@@ -38,7 +38,7 @@ describe('UserStore', () => {
 
     const newUser = {
       todos: [{}],
-      tags: [{}],
+      labels: [{}],
       nextId: 3
     }
 

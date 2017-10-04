@@ -1,33 +1,33 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
-import {addTag, removeTag} from './common/commandActions'
+import {addLabel, removeLabel} from './common/commandActions'
 
-export const TodoTags = createReactClass({
+export const TodoLabels = createReactClass({
   getInitialState() {
     return {
-      newTagText: ''
+      newLabelText: ''
     }
   },
 
   onSubmit (e) {
     e.preventDefault()
-    this.props.store.dispatch(addTag(this.props.todo.id, this.state.newTagText))
-    this.setState({newTagText: ''})
+    this.props.store.dispatch(addLabel(this.props.todo.id, this.state.newLabelText))
+    this.setState({newLabelText: ''})
   },
 
   render () {
-    const tags = this.props.todo.tags || []
-    return <form className='TodoTags' onSubmit={this.onSubmit}>
+    const labels = this.props.todo.labels || []
+    return <form className='TodoLabels' onSubmit={this.onSubmit}>
       <input
-        value={this.state.newTagText}
-        onChange={e => this.setState({newTagText: e.target.value})}
+        value={this.state.newLabelText}
+        onChange={e => this.setState({newLabelText: e.target.value})}
       />
       <button>Add</button>
       <ol>
-        {(tags || []).map(tag => <li key={tag} className='TodoTags-tag'>
-          <span className='TodoTags-tag-text'>{tag}</span>
+        {(labels || []).map(label => <li key={label} className='TodoLabels-label'>
+          <span className='TodoLabels-label-text'>{label}</span>
           {' '}
-          <a className="TodoTags-tag-delete" title={'Delete tag ' + tag} onClick={() => this.props.store.dispatch(removeTag(this.props.todo.id, tag))}>♻</a>
+          <a className="TodoLabels-label-delete" title={'Delete label ' + label} onClick={() => this.props.store.dispatch(removeLabel(this.props.todo.id, label))}>♻</a>
         </li>)}
       </ol>
     </form>

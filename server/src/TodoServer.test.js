@@ -19,8 +19,8 @@ describe('TodoServer', () => {
       delete fakeUserStore.users[key]
     })
 
-    fakeUserStore.users['validUser'] = {todos: [], tags: [], nextId: 1}
-    fakeUserStore.users['userWithOneTodo'] = {todos: [{id: 1, tags: ['presetTag1']}], tags: [{count: 1, name: 'presetTag1'}], nextId: 2}
+    fakeUserStore.users['validUser'] = {todos: [], labels: [], nextId: 1}
+    fakeUserStore.users['userWithOneTodo'] = {todos: [{id: 1, labels: ['presetLabel1']}], labels: [{count: 1, name: 'presetLabel1'}], nextId: 2}
   })
 
   ;[
@@ -55,7 +55,7 @@ describe('TodoServer', () => {
       return todoServer['INIT']({}, 'userWithOneTodo').then(response => {
         expect(response).toHaveLength(1)
         expect(getAction(response, 'LOAD_DATA'))
-          .toMatchObject({type:'LOAD_DATA', todos: [{tags: ['presetTag1']}], tags: [{count: 1, name: 'presetTag1'}]})
+          .toMatchObject({type:'LOAD_DATA', todos: [{labels: ['presetLabel1']}], labels: [{count: 1, name: 'presetLabel1'}]})
       })
     })
 
@@ -75,7 +75,7 @@ describe('TodoServer', () => {
       })
     })
 
-    it('should respond to DELETE_TODO with DELETE_TODO_FROM_SERVER and TAG_LIST_FROM_SERVE', () => {
+    it('should respond to DELETE_TODO with DELETE_TODO_FROM_SERVER and LABEL_LIST_FROM_SERVE', () => {
       expect.hasAssertions()
       const action = {type: 'DELETE_TODO', sendToServer: true, id: 1}
 
@@ -84,40 +84,40 @@ describe('TodoServer', () => {
           const deleteTodoFromServer = getAction(response, 'DELETE_TODO_FROM_SERVER')
           expect(deleteTodoFromServer.id).toBe(1)
 
-          const tagListFromServer = getAction(response, 'TAG_LIST_FROM_SERVER')
-          expect(tagListFromServer.tags).toMatchObject([{count: 0, name: 'presetTag1'}])
+          const labelListFromServer = getAction(response, 'LABEL_LIST_FROM_SERVER')
+          expect(labelListFromServer.labels).toMatchObject([{count: 0, name: 'presetLabel1'}])
         })
     })
 
-    it('should respond to ADD_TAG with SET_TAGS_FROM_SERVER and TAG_LIST_FROM_SERVER', () => {
+    it('should respond to ADD_LABEL with SET_LABELS_FROM_SERVER and LABEL_LIST_FROM_SERVER', () => {
       expect.hasAssertions()
-      const action = {type: 'ADD_TAG', sendToServer: true, id: 1, tagName: 'newTag1'}
+      const action = {type: 'ADD_LABEL', sendToServer: true, id: 1, labelName: 'newLabel1'}
 
       return todoServer[action.type](action, 'userWithOneTodo')
         .then(response => {
-          const setTagsFromServer = getAction(response, 'SET_TAGS_FROM_SERVER')
-          expect(setTagsFromServer.id).toBe(1)
-          expect(setTagsFromServer.tags).toContain('newTag1')
-          expect(setTagsFromServer.tags).toContain('presetTag1')
+          const setLabelsFromServer = getAction(response, 'SET_LABELS_FROM_SERVER')
+          expect(setLabelsFromServer.id).toBe(1)
+          expect(setLabelsFromServer.labels).toContain('newLabel1')
+          expect(setLabelsFromServer.labels).toContain('presetLabel1')
 
-          const tagListFromServer = getAction(response, 'TAG_LIST_FROM_SERVER')
-          expect(tagListFromServer.tags.map(x=>x.name+':'+x.count)).toContain('newTag1:1')
-          expect(tagListFromServer.tags.map(x=>x.name+':'+x.count)).toContain('presetTag1:1')
+          const labelListFromServer = getAction(response, 'LABEL_LIST_FROM_SERVER')
+          expect(labelListFromServer.labels.map(x=>x.name+':'+x.count)).toContain('newLabel1:1')
+          expect(labelListFromServer.labels.map(x=>x.name+':'+x.count)).toContain('presetLabel1:1')
         })
     })
 
-    it('should respond to REMOVE_TAG with SET_TAGS_FROM_SERVER and TAG_LIST_FROM_SERVER', () => {
+    it('should respond to REMOVE_LABEL with SET_LABELS_FROM_SERVER and LABEL_LIST_FROM_SERVER', () => {
       expect.hasAssertions()
-      const action = {type: 'REMOVE_TAG', sendToServer: true, id: 1, tagName: 'presetTag1'}
+      const action = {type: 'REMOVE_LABEL', sendToServer: true, id: 1, labelName: 'presetLabel1'}
 
       return todoServer[action.type](action, 'userWithOneTodo')
         .then(response => {
-          const setTagsFromServer = getAction(response, 'SET_TAGS_FROM_SERVER')
-          expect(setTagsFromServer.id).toBe(1)
-          expect(setTagsFromServer.tags).toHaveLength(0)
+          const setLabelsFromServer = getAction(response, 'SET_LABELS_FROM_SERVER')
+          expect(setLabelsFromServer.id).toBe(1)
+          expect(setLabelsFromServer.labels).toHaveLength(0)
 
-          const tagListFromServer = getAction(response, 'TAG_LIST_FROM_SERVER')
-          expect(tagListFromServer.tags).toMatchObject([{count: 0, name: 'presetTag1'}])
+          const labelListFromServer = getAction(response, 'LABEL_LIST_FROM_SERVER')
+          expect(labelListFromServer.labels).toMatchObject([{count: 0, name: 'presetLabel1'}])
         })
     })
 
@@ -133,18 +133,18 @@ describe('TodoServer', () => {
         })
     })
 
-    it('should respond to DELETE_TAG with SET_TAGS_FROM_SERVER and TAG_LIST_FROM_SERVER', () => {
+    it('should respond to DELETE_LABEL with SET_LABELS_FROM_SERVER and LABEL_LIST_FROM_SERVER', () => {
       expect.hasAssertions()
-      const action = {type: 'DELETE_TAG', sendToServer: true, tagName: 'presetTag1'}
+      const action = {type: 'DELETE_LABEL', sendToServer: true, labelName: 'presetLabel1'}
 
       return todoServer[action.type](action, 'userWithOneTodo')
         .then(response => {
-          const setTagsFromServer = getAction(response, 'SET_TAGS_FROM_SERVER')
-          expect(setTagsFromServer.id).toBe(1)
-          expect(setTagsFromServer.tags).toHaveLength(0)
+          const setLabelsFromServer = getAction(response, 'SET_LABELS_FROM_SERVER')
+          expect(setLabelsFromServer.id).toBe(1)
+          expect(setLabelsFromServer.labels).toHaveLength(0)
 
-          const tagListFromServer = getAction(response, 'TAG_LIST_FROM_SERVER')
-          expect(tagListFromServer.tags).toHaveLength(0)
+          const labelListFromServer = getAction(response, 'LABEL_LIST_FROM_SERVER')
+          expect(labelListFromServer.labels).toHaveLength(0)
         })
     })
   })

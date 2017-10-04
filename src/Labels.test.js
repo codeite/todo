@@ -2,60 +2,60 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { createStore } from 'redux'
-import { Tags } from './Labels'
+import { Labels } from './Labels'
 
 import { shallow } from 'enzyme'
 
-describe('Tags', () => {
+describe('Labels', () => {
   it('renders without crashing', () => {
     const store = {}
     const div = document.createElement('div');
 
-    ReactDOM.render(<Tags
+    ReactDOM.render(<Labels
       store={store}
-      tags={[]}
+      labels={[]}
     />, div);
   })
 
-  it('should have an <li> for each tag', () => {
-    const tags = ['A', 'B', 'C'].map((x, i) => (
+  it('should have an <li> for each label', () => {
+    const labels = ['A', 'B', 'C'].map((x, i) => (
       {
-        name: 'tag ' + x,
+        name: 'label ' + x,
         count: i+1+''
       }
     ))
 
-    const wrapper = shallow(<Tags tags={tags} />)
+    const wrapper = shallow(<Labels labels={labels} />)
     const listItems = wrapper.find('li')
     expect(listItems.length).toBe(3);
 
-    tags.forEach((tag, i) => {
+    labels.forEach((label, i) => {
       const li = listItems.at(i)
-      expect(li.find('.Tags-name').text()).toEqual(tag.name)
-      expect(li.find('.Tags-count').text()).toEqual(tag.count)
+      expect(li.find('.Labels-name').text()).toEqual(label.name)
+      expect(li.find('.Labels-count').text()).toEqual(label.count)
 
-      expect(li.find('.Tags-delete Icon').props().iconName).toEqual('cancel-circle')
+      expect(li.find('.Labels-delete Icon').props().iconName).toEqual('cancel-circle')
     })
   })
 
-  it('should raise a "DELETE_TAG" event when delete tag icon pressed', () => {
+  it('should raise a "DELETE_LABEL" event when delete label icon pressed', () => {
     const dispatch = jest.fn()
     const store = {
       dispatch
     }
-    const tags = [{
-      name: 'tag1'
+    const labels = [{
+      name: 'label1'
     }]
 
-    const wrapper = shallow(<Tags tags={tags} store={store} />)
-    const deleteButton = wrapper.find('.Tags-delete');
+    const wrapper = shallow(<Labels labels={labels} store={store} />)
+    const deleteButton = wrapper.find('.Labels-delete');
 
     expect(deleteButton.length).toBe(1)
     deleteButton.simulate('click');
 
     expect(dispatch.mock.calls.length).toBe(1);
     const event = dispatch.mock.calls[0][0]
-    expect(event.type).toBe('DELETE_TAG')
-    expect(event.tagName).toBe('tag1')
+    expect(event.type).toBe('DELETE_LABEL')
+    expect(event.labelName).toBe('label1')
   })
 })

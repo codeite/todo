@@ -16,8 +16,8 @@ describe('ServerClient', () => {
     commandActions.init,
     commandActions.addTodo,
     commandActions.deleteTodo,
-    commandActions.addTag,
-    commandActions.removeTag,
+    commandActions.addLabel,
+    commandActions.removeLabel,
     commandActions.setTodoStatus
   ].forEach(event => {
     it(`should send ${event.type} event to server`, () => {
