@@ -1,3 +1,7 @@
+import React from 'react'
 
-
-module.exports
+export function Icon ({iconName, alt}) {
+  return <svg className={'icon icon-'+iconName}>
+    <use xlinkHref={'symbol-defs.svg#icon-'+iconName}></use>
+  </svg>
+}

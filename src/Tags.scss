@@ -2,8 +2,26 @@
   padding: 4px;
   height: 100%;
 
+  li {
+    display: flex;
+  }
+
+
   .Tags-tag {
     background-color: #edd;
     margin: 2px;
+    display: flex;
+    justify-content: space-between;
+
+    .icon {
+      opacity: .3;
+      vertical-align: middle;
+      height: 0.8em;
+      padding-bottom: 2px;
+    }
+
+    .icon:hover {
+      opacity: 1;
+    }
   }
 }

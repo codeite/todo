@@ -132,6 +132,21 @@ describe('TodoServer', () => {
           expect(setTodoStatusFromServer.newStatus).toBe(true)
         })
     })
+
+    it('should respond to DELETE_TAG with SET_TAGS_FROM_SERVER and TAG_LIST_FROM_SERVER', () => {
+      expect.hasAssertions()
+      const action = {type: 'DELETE_TAG', sendToServer: true, tagName: 'presetTag1'}
+
+      return todoServer[action.type](action, 'userWithOneTodo')
+        .then(response => {
+          const setTagsFromServer = getAction(response, 'SET_TAGS_FROM_SERVER')
+          expect(setTagsFromServer.id).toBe(1)
+          expect(setTagsFromServer.tags).toHaveLength(0)
+
+          const tagListFromServer = getAction(response, 'TAG_LIST_FROM_SERVER')
+          expect(tagListFromServer.tags).toHaveLength(0)
+        })
+    })
   })
 })
 

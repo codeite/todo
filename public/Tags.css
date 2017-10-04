@@ -1,6 +1,17 @@
 .Tags {
   padding: 4px;
   height: 100%; }
+  .Tags li {
+    display: flex; }
   .Tags .Tags-tag {
     background-color: #edd;
-    margin: 2px; }
+    margin: 2px;
+    display: flex;
+    justify-content: space-between; }
+    .Tags .Tags-tag .icon {
+      opacity: .3;
+      vertical-align: middle;
+      height: 0.8em;
+      padding-bottom: 2px; }
+    .Tags .Tags-tag .icon:hover {
+      opacity: 1; }

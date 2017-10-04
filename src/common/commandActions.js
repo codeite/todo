@@ -17,6 +17,7 @@ sendToServerAction('addTodo', (text) => ({text}))
 sendToServerAction('deleteTodo', (id) => ({id}))
 sendToServerAction('addTag', (id, tagName) => ({id, tagName}))
 sendToServerAction('removeTag', (id, tagName) => ({id, tagName}))
+sendToServerAction('deleteTag', (tagName) => ({tagName}))
 sendToServerAction('setTodoStatus', (id, newStatus) => ({id, newStatus}))
 
 function toUpperCase(str) {

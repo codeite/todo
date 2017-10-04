@@ -30,8 +30,32 @@ describe('Tags', () => {
     expect(listItems.length).toBe(3);
 
     tags.forEach((tag, i) => {
-      expect(listItems.at(i).find('.Tags-name').text()).toEqual(tag.name)
-      expect(listItems.at(i).find('.Tags-count').text()).toEqual(tag.count)
+      const li = listItems.at(i)
+      expect(li.find('.Tags-name').text()).toEqual(tag.name)
+      expect(li.find('.Tags-count').text()).toEqual(tag.count)
+
+      expect(li.find('.Tags-delete Icon').props().iconName).toEqual('cancel-circle')
     })
+  })
+
+  it('should raise a "DELETE_TAG" event when delete tag icon pressed', () => {
+    const dispatch = jest.fn()
+    const store = {
+      dispatch
+    }
+    const tags = [{
+      name: 'tag1'
+    }]
+
+    const wrapper = shallow(<Tags tags={tags} store={store} />)
+    const deleteButton = wrapper.find('.Tags-delete');
+
+    expect(deleteButton.length).toBe(1)
+    deleteButton.simulate('click');
+
+    expect(dispatch.mock.calls.length).toBe(1);
+    const event = dispatch.mock.calls[0][0]
+    expect(event.type).toBe('DELETE_TAG')
+    expect(event.tagName).toBe('tag1')
   })
 })

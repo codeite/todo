@@ -168,4 +168,28 @@ TodoServer.prototype[commandActions.setTodoStatus.type] = function (action, user
     })
 }
 
+TodoServer.prototype[commandActions.deleteTag.type] = function (action, username) {
+  return this.userStore.getUser(username)
+    .then(user => {
+      const todos = user.todos.filter(x => x.tags.includes(action.tagName))
+      todos.forEach(todo => {
+        todo.tags = todo.tags.filter(x => x !== action.tagName)
+      })
+
+      user.tags = user.tags.filter(x => x.name !== action.tagName)
+      return this.userStore.saveUser(username, user).then(() => ({todos, user}))
+    })
+    .then(({todos, user}) => {
+      const response = [dataActions.tagListFromServer(user.tags)]
+      todos.forEach(todo => {
+        response.push(dataActions.setTagsFromServer(todo.id, todo.tags))
+      })
+      return response
+    })
+    .catch(err => {
+      console.log('Error while adding todo:', err)
+      throw err
+    })
+}
+
 module.exports = TodoServer
