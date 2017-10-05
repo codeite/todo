@@ -15,8 +15,11 @@ import { SocketWrapper } from './SocketWrapper'
 const store = createStore(appReducer)
 // store.subscribe(server.onAction)
 //new ServerClient(store, new FakeServer(2000))
-// new ServerClient(store, new FetchWrapper(store, 'http://localhost:3001'))
-new ServerClient(store, new SocketWrapper(store, 'ws://localhost:3001'))
+// new ServerClient(store, new FetchWrapper(store, 'http://localhost:12010'))
+
+const server = getServer()
+
+new ServerClient(store, new SocketWrapper(store, getWsServer()))
 //new ServerClient(store, new SocketWrapper(store))
 
 store.dispatch(init())
@@ -24,3 +27,11 @@ store.dispatch(init())
 ReactDOM.render(<App store={store} />, document.getElementById('root'));
 
 // registerServiceWorker();
+
+function getWsServer () {
+  if (window && window.location && window.location.href && window.location.href.contains && window.location.href.contains('//localhost')) {
+    return 'ws://localhost:12010'
+  } else {
+    return undefined
+  }
+}

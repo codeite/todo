@@ -22,7 +22,7 @@ export class FetchWrapper {
       body: JSON.stringify(action)
     }
     this.pending++
-    return window.fetch(this.urlPrefix + '/redux', options)
+    return window.fetch(this.urlPrefix + '/todo-redux', options)
       .then(res => {
         if (!res.ok) {
           console.log('Action failed:', action)

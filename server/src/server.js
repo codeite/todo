@@ -1,17 +1,41 @@
 const http = require('http')
 const fetch = require('node-fetch')
+const authClient = require('@codeite/auth-client')
+const config = require('./config')
 const TodoServer = require('./TodoServer')
 const UserStore = require('./UserStore')
-const todoServer = new TodoServer(new UserStore('http://localhost:5984', fetch))
+const todoServer = new TodoServer(new UserStore(config.database, fetch))
 const WebSocket = require('ws')
+
+const secret = config.SECRET || '9fb2c1f5bee35640fb2090'
 
 WebSocket.prototype.onWebSocketOpen = function onWebSocketOpen(ws, req) {
   ws.upgradeReq = req
 }
 
-const server = http.createServer(createApp())
+const authClientInstance = authClient('todo_user', secret, {
+  rejector: res => reason => {
+    res.statusCode = 401
+    res.statusMessage = reason
+    res.write(reason)
+    res.end()
+  }
+})
+
+const server = http.createServer((req, res) => {
+  console.log('req.headers:', req.headers)
+  const next = () => {
+    createApp()(req, res)
+  }
+  if (req.url.startsWith('/login')) {
+    next()
+  } else {
+    authClientInstance(req, res, next)
+  }
+})
 
 const wss = new WebSocket.Server({ server })
+
 
 wss.on('connection', (ws, req) => {
   // console.log('connection:', ws)
@@ -35,11 +59,13 @@ wss.on('connection', (ws, req) => {
   //ws.send('something')
 });
 
-server.listen(3001, error => console.log(error || 'Server listening on port 3001')); //the server object listens on port 3001
+server.listen(config.port, error => console.log(error || 'Server listening on port 3001')); //the server object listens on port 3001
 
 //create a server object:
 function createApp() {
   return (req, res) => {
+
+
     res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
     res.setHeader('Access-Control-Allow-Credentials', req.headers.origin ? 'true' : 'false')
@@ -49,18 +75,21 @@ function createApp() {
       return
     }
 
-    const username = (
-        (req.headers.cookie||'')
-          .split('; ')
-          .find(x => x.startsWith('username=')) || 'username='
-      )
-      .substr('username='.length)
+    // const username = (
+    //     (req.headers.cookie||'')
+    //       .split('; ')
+    //       .find(x => x.startsWith('username=')) || 'username='
+    //   )
+    //   .substr('username='.length)
+    //console.log('req.userId:', req.userId)
+    const username = req.userId
 
     if (req.url.startsWith ('/login')) {
       try {
         const auth = JSON.parse(decodeURIComponent(req.url.substr(req.url.indexOf('?')+1)))
 
         res.setHeader('Set-Cookie', 'username=' + auth.username)
+        res.setHeader('Set-Cookie', 'todo_user=' + authClient.sign(auth.username, secret))
         res.write('Logged in as: ' + auth.username)
         res.end()
       } catch (ex) {
@@ -77,8 +106,8 @@ function createApp() {
       return
     }
 
-    if (!req.url.startsWith('/redux')) {
-      return error(res, 'only `/redux` is valid')
+    if (!req.url.startsWith('/todo-redux')) {
+      return error(res, 'only `/todo-redux` is valid')
     }
 
     const user = (req.headers.cookies || '')

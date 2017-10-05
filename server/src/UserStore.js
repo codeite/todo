@@ -2,13 +2,13 @@
 
 class UserStore {
   constructor (database, fetch, logger) {
-    this.database = database || 'http://localhost:5984'
+    this.database = database
     this.fetch = fetch || require('node-fetch')
     this.logger = logger || (() => {})
   }
 
   getUser(username) {
-    const path = this.database + '/todo/' + username
+    const path = this.database + 'todo/' + username
     return this.fetch(path)
       .then(res => {
         if (res.status === 404) {
@@ -28,7 +28,7 @@ class UserStore {
   }
 
   saveUser (username, user) {
-    const path = this.database + '/todo/' + username
+    const path = this.database + 'todo/' + username
     const options = {
       method: 'PUT',
       headers: {
