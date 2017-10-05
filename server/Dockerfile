@@ -1,16 +1,19 @@
 FROM node:6.10.3
 
 # Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /usr/app/server/src
+WORKDIR /usr/app/server/src
 
 # Install app dependencies
-COPY package.json /usr/src/app/
+COPY server/package.json /usr/app/server
 RUN npm install --production
 
-# Bundle app
-RUN mkdir -p /usr/src/app/src
-COPY ./src /usr/src/app/src
+# copy common
+RUN mkdir -p /usr/app/src
+COPY common /usr/app/src
+
+# copy app
+COPY server/src /usr/app/server/src
 
 EXPOSE 12010
 CMD [ "npm", "start" ]

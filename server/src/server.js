@@ -7,13 +7,11 @@ const UserStore = require('./UserStore')
 const todoServer = new TodoServer(new UserStore(config.database, fetch))
 const WebSocket = require('ws')
 
-const secret = config.SECRET || '9fb2c1f5bee35640fb2090'
-
 WebSocket.prototype.onWebSocketOpen = function onWebSocketOpen(ws, req) {
   ws.upgradeReq = req
 }
 
-const authClientInstance = authClient('todo_user', secret, {
+const authClientInstance = authClient('todo_user', config.SECRET, {
   rejector: res => reason => {
     res.statusCode = 401
     res.statusMessage = reason
@@ -59,7 +57,7 @@ wss.on('connection', (ws, req) => {
   //ws.send('something')
 });
 
-server.listen(config.port, error => console.log(error || 'Server listening on port 3001')); //the server object listens on port 3001
+server.listen(config.port, error => console.log(error || `Server listening on port ${config.port}`)); //the server object listens on port config.port
 
 //create a server object:
 function createApp() {
@@ -89,7 +87,7 @@ function createApp() {
         const auth = JSON.parse(decodeURIComponent(req.url.substr(req.url.indexOf('?')+1)))
 
         res.setHeader('Set-Cookie', 'username=' + auth.username)
-        res.setHeader('Set-Cookie', 'todo_user=' + authClient.sign(auth.username, secret))
+        res.setHeader('Set-Cookie', 'todo_user=' + authClient.sign(auth.username, config.SECRET))
         res.write('Logged in as: ' + auth.username)
         res.end()
       } catch (ex) {

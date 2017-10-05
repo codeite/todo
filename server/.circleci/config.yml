@@ -19,6 +19,9 @@ jobs:
           name: Docker login
           command: docker login docker.codeite.net -u $DOCKER_USER -p $DOCKER_PASS
       - run:
+          name: Build
+          command: ./build.sh
+      - run:
           name: Build docker image
           command: .circleci/docker-build.sh
       - run:

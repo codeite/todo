@@ -1,5 +1,6 @@
-const commandActions = require('../../src/common/commandActions')
-const dataActions = require('../../src/common/dataActions')
+// const commandActions = require('../../src/common/commandActions')
+// const dataActions = require('../../src/common/dataActions')
+const {commandActions, dataActions} = require('../../src/common')
 const UserStore = require('./UserStore')
 
 class TodoServer {
