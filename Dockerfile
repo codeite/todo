@@ -9,8 +9,8 @@ COPY server/package.json /usr/app/server
 RUN npm install --production
 
 # copy common
-RUN mkdir -p /usr/app/src
-COPY common /usr/app/src
+RUN mkdir -p /usr/app/src/common
+COPY src/common /usr/app/src/common
 
 # copy app
 COPY server/src /usr/app/server/src
