@@ -22,4 +22,4 @@ yarn-error.log*
 public/bundle.css
 public/bundle.scss
 katalon/
-server/build
+
