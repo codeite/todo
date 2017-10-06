@@ -6,7 +6,7 @@
   "author": "Sam Plews <the@codeite.com>",
   "license": "MIT",
   "dependencies": {
-    "@codeite/auth-client": "2.0.0",
+    "@codeite/auth-client": "2.1.0",
     "dotenv": "^4.0.0",
     "node-fetch": "^1.7.3",
     "sp-conf": "^2.2.2",
