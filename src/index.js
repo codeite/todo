@@ -17,9 +17,9 @@ const store = createStore(appReducer)
 //new ServerClient(store, new FakeServer(2000))
 // new ServerClient(store, new FetchWrapper(store, 'http://localhost:12010'))
 
-const server = getServer()
+const server = getWsServer()
 
-new ServerClient(store, new SocketWrapper(store, getWsServer()))
+new ServerClient(store, new SocketWrapper(store, server))
 //new ServerClient(store, new SocketWrapper(store))
 
 store.dispatch(init())

@@ -11,7 +11,7 @@ export class SocketWrapper {
       ((loc.protocol === 'https:' ? 'wss://' : 'ws://') + loc.host);
 
     console.log('webSocketUri:', webSocketUri)
-    var socket = new WebSocket(webSocketUri + '/', "a");
+    var socket = new WebSocket(webSocketUri + '/todo-redux', "a");
 
     socket.onopen = event => {
       this.socket = socket
