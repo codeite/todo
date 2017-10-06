@@ -11,7 +11,7 @@ WebSocket.prototype.onWebSocketOpen = function onWebSocketOpen(ws, req) {
   ws.upgradeReq = req
 }
 
-const authClientInstance = authClient('todo_user', config.SECRET, {
+const authClientInstance = authClient('todo_user', config.secret, {
   rejector: res => reason => {
     res.statusCode = 401
     res.statusMessage = reason
@@ -87,7 +87,7 @@ function createApp() {
         const auth = JSON.parse(decodeURIComponent(req.url.substr(req.url.indexOf('?')+1)))
 
         res.setHeader('Set-Cookie', 'username=' + auth.username)
-        res.setHeader('Set-Cookie', 'todo_user=' + authClient.sign(auth.username, config.SECRET))
+        res.setHeader('Set-Cookie', 'todo_user=' + authClient.sign(auth.username, config.secret))
         res.write('Logged in as: ' + auth.username)
         res.end()
       } catch (ex) {
