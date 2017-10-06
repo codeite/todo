@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: node:7.4.0
-    working_directory: ~/auth.codeite.net
+    working_directory: ~/todo
     steps:
       - checkout
       - setup_remote_docker
@@ -20,7 +20,7 @@ jobs:
           command: docker login docker.codeite.net -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: Build
-          command: ./build.sh
+          command: server/build.sh
       - run:
           name: Build docker image
           command: .circleci/docker-build.sh

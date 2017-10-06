@@ -16,6 +16,6 @@ export PACKAGE_NAME=$(cat package.json \
 
 export DOCKER_TAG="docker.codeite.net/$PACKAGE_NAME:$PACKAGE_VERSION.build_$CIRCLE_BUILD_NUM"
 
-docker build -t $DOCKER_TAG build
+docker build -t $DOCKER_TAG server/build
 echo "Built $DOCKER_TAG"
 
