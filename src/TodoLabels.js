@@ -1,6 +1,7 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
 import {addLabel, removeLabel} from './common/commandActions'
+import {Icon} from './Icon'
 
 export const TodoLabels = createReactClass({
   getInitialState() {
@@ -27,7 +28,9 @@ export const TodoLabels = createReactClass({
         {(labels || []).map(label => <li key={label} className='TodoLabels-label'>
           <span className='TodoLabels-label-text'>{label}</span>
           {' '}
-          <a className="TodoLabels-label-delete" title={'Delete label ' + label} onClick={() => this.props.store.dispatch(removeLabel(this.props.todo.id, label))}>♻</a>
+          <a className="TodoLabels-label-delete" title={'Delete label ' + label} onClick={() => this.props.store.dispatch(removeLabel(this.props.todo.id, label))}>
+            <Icon iconName='cancel-circle' alt='Delete' />
+          </a>
         </li>)}
       </ol>
     </form>

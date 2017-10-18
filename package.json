@@ -24,6 +24,7 @@
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "publish": "yarn build && rsync -avz --delete ./build/ sam@helium:~/apps/todo/static"
+    "publish": "yarn build && rsync -avz --delete ./build/ sam@helium:~/apps/todo/static",
+    "dev": "yarn start && yarn watch-css"
   }
 }

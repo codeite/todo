@@ -33,11 +33,11 @@ describe('TodoLabels', () => {
 
     const labels = wrapper.find('.TodoLabels-label-delete')
     expect(labels.length).toBe(3)
-    expect(labels.at(0).text()).toBe('♻')
+    expect(labels.at(0).text()).toBe('<Icon />')
     expect(labels.at(0).getNode().props.title).toBe('Delete label alpha')
-    expect(labels.at(1).text()).toBe('♻')
+    expect(labels.at(1).text()).toBe('<Icon />')
     expect(labels.at(1).getNode().props.title).toBe('Delete label bravo')
-    expect(labels.at(2).text()).toBe('♻')
+    expect(labels.at(2).text()).toBe('<Icon />')
     expect(labels.at(2).getNode().props.title).toBe('Delete label charlie')
   })
 

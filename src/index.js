@@ -29,7 +29,9 @@ ReactDOM.render(<App store={store} />, document.getElementById('root'));
 // registerServiceWorker();
 
 function getWsServer () {
-  if (window && window.location && window.location.href && window.location.href.contains && window.location.href.contains('//localhost')) {
+  console.log('window.location.href:', window.location.href)
+  console.log('window.location.href.includes(//localhost):', window.location.href.includes('//localhost'))
+  if (window && window.location && window.location.href && window.location.href.includes && window.location.href.includes('//localhost')) {
     return 'ws://localhost:12010'
   } else {
     return undefined
